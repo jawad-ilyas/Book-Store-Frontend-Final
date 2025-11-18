@@ -20,14 +20,14 @@ const App = () => {
   return (
     <div>
       <Header />
-      <Home />
+      {/* <Home /> */}
       {/* <SearchResultsPage /> */}
       {/* <BookDetailPage /> */}
       {/* <CartPage /> */}
       {/* <CheckoutPage /> */}
       {/* <OrdersPage /> */}
       {/* <ProfilePage /> */}
-      {/* <LoginRegisterPage /> */}
+      <LoginRegisterPage />
       {/* <AdminDashboard /> */}
       {/* <AdminBooksPage /> */}
       {/* <AdminOrdersPage /> */}

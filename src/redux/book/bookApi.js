@@ -7,7 +7,7 @@ const baseQuery = fetchBaseQuery({
     baseUrl: `${baseURL()}/api`,
     credentials: 'include', // this include is used if we are using the cookie 
     prepareHeaders: (headers) => {
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem("accessToken")
         if (token) {
             headers.set('Authorization', `Bearer ${token}`)
         }

@@ -1,13 +1,25 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
+import { useRegisterUserMutation } from "../../redux/user/userApi";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../redux/auth/authSlice";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const { register, handleSubmit, formState: { errors } } = useForm();
-
-  const onSubmit = (data) => {
+  const [registerUser, { isLoading, isError }] = useRegisterUserMutation();
+  const dispatch = useDispatch();
+  const onSubmit = async (data) => {
     console.log(isLogin ? "Login data:" : "Register data:", data);
+    if (!isLogin) {
+      const result = await registerUser(data).unwrap()
+      console.log("result ", result)
+      dispatch(setCredentials({ user: result?.user, accessToken: result?.accessToken }))
+      alert("Registered successfully!");
+
+
+    }
     alert(`${isLogin ? "Login" : "Register"} successful!`);
   };
 
@@ -22,9 +34,8 @@ const AuthForm = () => {
           <input
             {...register("name", { required: true })}
             placeholder="Full Name"
-            className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${
-              errors.name ? "border-2 border-red-500" : ""
-            }`}
+            className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${errors.name ? "border-2 border-red-500" : ""
+              }`}
           />
         )}
 
@@ -32,17 +43,15 @@ const AuthForm = () => {
           {...register("email", { required: true })}
           type="email"
           placeholder="Email Address"
-          className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${
-            errors.email ? "border-2 border-red-500" : ""
-          }`}
+          className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${errors.email ? "border-2 border-red-500" : ""
+            }`}
         />
         <input
           {...register("password", { required: true })}
           type="password"
           placeholder="Password"
-          className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${
-            errors.password ? "border-2 border-red-500" : ""
-          }`}
+          className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${errors.password ? "border-2 border-red-500" : ""
+            }`}
         />
 
         <motion.button
