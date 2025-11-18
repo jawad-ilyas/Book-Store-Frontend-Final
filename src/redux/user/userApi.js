@@ -30,11 +30,22 @@ const userApi = createApi({
                 body: data
             }),
             providesTags: ['User']
+        }),
+        loginUser: builder.mutation({
+            query: (data) => ({
+                url: '/auth/login',
+                method: 'POST',
+                body: data
+            }),
+            providesTags: ['User']
+        }),
+        getProfile : builder.query({
+            query : ()=> '/users/profile'
         })
     })
 })
 
 
-export const {useRegisterUserMutation} = userApi
+export const { useRegisterUserMutation, useLoginUserMutation } = userApi
 
 export default userApi

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { useRegisterUserMutation } from "../../redux/user/userApi";
+import { useLoginUserMutation, useRegisterUserMutation } from "../../redux/user/userApi";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/auth/authSlice";
 
@@ -9,6 +9,7 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [registerUser, { isLoading, isError }] = useRegisterUserMutation();
+  const [loginUser, { isLoading: isErrorLoading, isError: isErrorLogin }] = useLoginUserMutation();
   const dispatch = useDispatch();
   const onSubmit = async (data) => {
     console.log(isLogin ? "Login data:" : "Register data:", data);
@@ -17,10 +18,14 @@ const AuthForm = () => {
       console.log("result ", result)
       dispatch(setCredentials({ user: result?.user, accessToken: result?.accessToken }))
       alert("Registered successfully!");
-
-
     }
-    alert(`${isLogin ? "Login" : "Register"} successful!`);
+    else {
+      const result = await loginUser(data)
+      console.log("result or login case ", result)
+      dispatch(setCredentials({ user: result?.user, accessToken: result?.accessToken }))
+      alert("login successfully!");
+    }
+    // alert(`${isLogin ? "Login" : "Register"} successful!`);
   };
 
   return (
