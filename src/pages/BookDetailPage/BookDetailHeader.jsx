@@ -6,7 +6,7 @@ const BookDetailHeader = ({ book }) => {
     <section className="flex flex-col md:flex-row items-start md:items-center gap-8 px-6 py-12">
       {/* Book Cover */}
       <motion.img
-        src={book.image}
+        src={book.coverImage}
         alt={book.title}
         className="w-64 h-80 md:w-72 md:h-96 rounded-2xl shadow-neu object-cover"
         initial={{ opacity: 0, x: -20 }}
@@ -24,9 +24,9 @@ const BookDetailHeader = ({ book }) => {
         <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           {book.title}
         </h1>
-        <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">{book.author}</p>
+        <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">{book.author?.name}</p>
         <p className="text-teal-500 dark:text-teal-400 font-bold text-2xl mb-6">
-          {book.price}
+          $ {book.price}
         </p>
 
         {/* Buttons */}
