@@ -1,22 +1,22 @@
 import { useState } from "react";
 import BookReviews from "./BookReviews";
 import SimilarBooks from "./SimilarBooks";
+import AddBookReview from "./AddBookReview";
 
-const BookTabs = ({ book }) => {
+const BookTabs = ({ book, booksReview }) => {
   const [activeTab, setActiveTab] = useState("description");
 
   return (
     <section className="px-6 py-12">
       <div className="flex gap-4 mb-6">
-        {["description", "reviews", "similar"].map((tab) => (
+        {["description", "reviews", "addreview"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-xl font-semibold ${
-              activeTab === tab
+            className={`px-4 py-2 rounded-xl font-semibold ${activeTab === tab
                 ? "bg-teal-400 dark:bg-teal-500 text-white shadow-neu"
                 : "bg-white/30 dark:bg-black/30 text-gray-900 dark:text-gray-100 shadow-neu hover:shadow-neu-hover"
-            } transition`}
+              } transition`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </button>
@@ -29,8 +29,9 @@ const BookTabs = ({ book }) => {
             <p>{book.description}</p>
           </div>
         )}
-        {activeTab === "reviews" && <BookReviews reviews={book.reviews} />}
-        {activeTab === "similar" && <SimilarBooks books={book.similarBooks} />}
+        {activeTab === "reviews" && <BookReviews reviews={booksReview} />}
+        {activeTab === "addreview" && <AddBookReview  />}
+        {/* {activeTab === "similar" && <SimilarBooks books={book.similarBooks} />} */}
       </div>
     </section>
   );

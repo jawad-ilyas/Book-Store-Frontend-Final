@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
-import { HeartIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { HeartIcon, ShoppingCartIcon, StarIcon, TagIcon } from "@heroicons/react/24/outline";
 
 const BookDetailHeader = ({ book }) => {
+  const discountedPrice = book.discountPercent
+    ? (book.price * (100 - book.discountPercent)) / 100
+    : book.price;
+
   return (
     <section className="flex flex-col md:flex-row items-start md:items-center gap-8 px-6 py-12">
       {/* Book Cover */}
@@ -21,13 +25,57 @@ const BookDetailHeader = ({ book }) => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8 }}
       >
+        {/* Title & Author */}
         <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           {book.title}
         </h1>
-        <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">{book.author?.name}</p>
-        <p className="text-teal-500 dark:text-teal-400 font-bold text-2xl mb-6">
-          $ {book.price}
+        <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">
+          By <span className="font-semibold">{book.author?.name}</span>
         </p>
+
+        {/* Price & Discount */}
+        <div className="flex items-center gap-4 mb-4">
+          <p className="text-teal-500 dark:text-teal-400 font-bold text-2xl">
+            $ {discountedPrice}
+          </p>
+          {book.discountPercent > 0 && (
+            <span className="text-gray-500 dark:text-gray-400 line-through">
+              $ {book.price}
+            </span>
+          )}
+          {book.discountPercent > 0 && (
+            <span className="bg-red-500 text-white text-xs px-2 py-1 rounded">
+              -{book.discountPercent}%
+            </span>
+          )}
+        </div>
+
+        {/* Tags: Top Seller / Recommended */}
+        <div className="flex gap-2 mb-4">
+          {book.topSeller && (
+            <span className="bg-yellow-400 text-white px-2 py-1 rounded text-sm font-semibold">
+              Top Seller
+            </span>
+          )}
+          {book.recommended && (
+            <span className="bg-blue-500 text-white px-2 py-1 rounded text-sm font-semibold">
+              Recommended
+            </span>
+          )}
+        </div>
+
+        {/* Details */}
+        <div className="grid grid-cols-2 gap-4 mb-6 text-gray-700 dark:text-gray-300">
+          <p><span className="font-semibold">Publisher:</span> {book.publisher}</p>
+          <p><span className="font-semibold">ISBN:</span> {book.isbn}</p>
+          <p><span className="font-semibold">Pages:</span> {book.pages}</p>
+          <p><span className="font-semibold">Stock:</span> {book.stock}</p>
+          <p><span className="font-semibold">Category:</span> {book.category}</p>
+          <p><span className="font-semibold">Subcategory:</span> {book.subCategory}</p>
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-800 dark:text-gray-200 mb-6">{book.description}</p>
 
         {/* Buttons */}
         <div className="flex gap-4">

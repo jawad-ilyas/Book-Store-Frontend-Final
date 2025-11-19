@@ -43,8 +43,8 @@ const reviewApi = createApi({
          * POST /reviews/:id
          */
         addReview: builder.mutation({
-            query: ({ id, ...data }) => ({
-                url: `/reviews/${id}`,
+            query: (data) => ({
+                url: `/reviews/`,
                 method: "POST",
                 body: data
             }),
@@ -54,9 +54,9 @@ const reviewApi = createApi({
 });
 
 // Export hooks for functional components
-export const { 
-    useGetReviewsByBookQuery, 
-    useAddReviewMutation 
+export const {
+    useGetReviewsByBookQuery,
+    useAddReviewMutation
 } = reviewApi;
 
 export default reviewApi;

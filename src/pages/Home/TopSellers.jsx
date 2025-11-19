@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useGetTopSellersQuery } from "../../redux/book/bookApi";
+import { Link } from "react-router-dom";
 
 
 
@@ -24,9 +25,9 @@ const TopSellers = () => {
               alt={book.title}
               className="w-36 h-48 rounded-lg object-cover mb-4 shadow-md"
             />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center">
+            <Link to={`book/${book?._id}`} className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center">
               {book.title}
-            </h3>
+            </Link>
             <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{book.author?.name}</p>
             <p className="text-teal-500 dark:text-teal-400 font-bold mb-3">{book.price}</p>
             <motion.button

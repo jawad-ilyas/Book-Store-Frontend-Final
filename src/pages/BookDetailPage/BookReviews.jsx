@@ -10,7 +10,7 @@ const BookReviews = ({ reviews }) => {
         >
           <div className="flex items-center mb-2">
             <span className="font-semibold text-gray-900 dark:text-gray-100 mr-2">
-              {review.user}
+              {review.userId?.name}
             </span>
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (

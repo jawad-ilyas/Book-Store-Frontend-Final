@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 
 const HeroBanner = () => {
+
+    
   return (
     <section className="relative w-full h-[550px] flex items-center justify-center bg-gradient-to-r from-indigo-200 via-pink-200 to-yellow-200 dark:from-gray-800 dark:via-gray-700 dark:to-gray-600 overflow-hidden rounded-3xl shadow-xl p-6">
       {/* Glass Overlay */}

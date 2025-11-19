@@ -15,19 +15,23 @@ import NotFound from './pages/NotFound'
 import NewsletterPage from './pages/NewsletterPage'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ToastComponent from './components/ToastComponent'
+import { Outlet } from 'react-router-dom'
 
 const App = () => {
   return (
     <div>
       <Header />
+      <Outlet />
       {/* <Home /> */}
+      <ToastComponent />
       {/* <SearchResultsPage /> */}
       {/* <BookDetailPage /> */}
       {/* <CartPage /> */}
       {/* <CheckoutPage /> */}
       {/* <OrdersPage /> */}
       {/* <ProfilePage /> */}
-      <LoginRegisterPage />
+      {/* <LoginRegisterPage /> */}
       {/* <AdminDashboard /> */}
       {/* <AdminBooksPage /> */}
       {/* <AdminOrdersPage /> */}

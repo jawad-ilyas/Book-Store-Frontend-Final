@@ -4,6 +4,7 @@ import Categories from "./Categories";
 import TopSellers from "./TopSellers";
 import RecommendedBooks from "./RecommendedBooks";
 import NewsletterSignup from "./NewsletterSignup";
+import CreateCategory from "../../components/admin/category/CreateCategory";
 
 const Home = () => {
   return (
@@ -13,7 +14,7 @@ const Home = () => {
 
       {/* Book Categories */}
       <Categories />
-
+      {/* <CreateCategory /> */}
       {/* Top Sellers Section */}
       <TopSellers />
 
