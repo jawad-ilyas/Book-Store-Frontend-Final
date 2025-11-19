@@ -27,7 +27,7 @@ const Header = () => {
     if (data?.search.trim() == 0) return
     else {
       console.log(data?.search)
-      navigate(`/s?q=${encodeURIComponent(data?.search.trim())}`);
+      navigate(`/search?q=${encodeURIComponent(data?.search.trim())}`);
     }
   }
   return (
