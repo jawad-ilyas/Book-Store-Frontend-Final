@@ -20,20 +20,20 @@ const App = () => {
   return (
     <div>
       <Header />
-      <Home />
-      <SearchResultsPage />
-      <BookDetailPage />
-      <CartPage />
-      <CheckoutPage />
-      <OrdersPage />
-      <ProfilePage />
+      {/* <Home /> */}
+      {/* <SearchResultsPage /> */}
+      {/* <BookDetailPage /> */}
+      {/* <CartPage /> */}
+      {/* <CheckoutPage /> */}
+      {/* <OrdersPage /> */}
+      {/* <ProfilePage /> */}
       <LoginRegisterPage />
-      <AdminDashboard />
-      <AdminBooksPage />
-      <AdminOrdersPage />
-      <AdminUsersPage />
-      <NotFound />
-      <NewsletterPage />
+      {/* <AdminDashboard /> */}
+      {/* <AdminBooksPage /> */}
+      {/* <AdminOrdersPage /> */}
+      {/* <AdminUsersPage /> */}
+      {/* <NotFound /> */}
+      {/* <NewsletterPage /> */}
 
       <Footer />
 
