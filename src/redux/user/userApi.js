@@ -1,29 +1,24 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseURL } from "../../utilis/baseURL";
-import { build } from "vite";
-
-
-
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${baseURL()}/api`,
     credentials: 'include',
     prepareHeaders: (headers) => {
-        const token = localStorage.getItem("accessToken")
+        const token = localStorage.getItem("accessToken");
         if (token) {
-            headers.set("Authorization", `Bearer ${token}`)
+            headers.set("Authorization", `Bearer ${token}`);
         }
         return headers;
     }
-})
-
+});
 
 const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery,
     tagTypes: ['User'],
     endpoints: (builder) => ({
-
+        // User Authentication
         registerUser: builder.mutation({
             query: (data) => ({
                 url: "/auth/register",
@@ -32,21 +27,20 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
-
         loginUser: builder.mutation({
             query: (data) => ({
-                url: '/auth/login',
-                method: 'POST',
+                url: "/auth/login",
+                method: "POST",
                 body: data
             }),
             invalidatesTags: ['User']
         }),
 
+        // Profile
         getProfile: builder.query({
-            query: () => '/users/profile',
+            query: () => "/users/profile",
             providesTags: ['User']
         }),
-
         updateUserProfile: builder.mutation({
             query: ({ id, data }) => ({
                 url: `/users/updateUserProfile/${id}`,
@@ -56,15 +50,15 @@ const userApi = createApi({
             invalidatesTags: ['User']
         }),
 
+        // Cart
         addToCart: builder.mutation({
             query: (data) => ({
                 url: "/users/cart/add",
-                method: 'POST',
+                method: "POST",
                 body: data
             }),
             invalidatesTags: ['User']
         }),
-
         removeFromCart: builder.mutation({
             query: (data) => ({
                 url: "/users/cart/remove",
@@ -73,25 +67,24 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
-
         updateCartItem: builder.mutation({
             query: (data) => ({
-                url: "/users/cart/remove",
+                url: "/users/cart/update",
                 method: "PUT",
                 body: data
             }),
             invalidatesTags: ['User']
         }),
-        addToWishlist: build.mutation({
+
+        // Wishlist
+        addToWishlist: builder.mutation({
             query: (data) => ({
                 url: "/users/wishlist/add",
                 method: "POST",
                 body: data
             }),
             invalidatesTags: ['User']
-
         }),
-
         removeFromWishlist: builder.mutation({
             query: (data) => ({
                 url: "/users/wishlist/remove",
@@ -99,17 +92,15 @@ const userApi = createApi({
                 body: data
             }),
             invalidatesTags: ['User']
-
         }),
         getWishlist: builder.query({
             query: () => "/users/wishlist/getWishlist",
             providesTags: ['User']
-        })
-
+        }),
     })
-})
+});
 
-
+// Export hooks
 export const {
     useRegisterUserMutation,
     useLoginUserMutation,
@@ -117,7 +108,10 @@ export const {
     useUpdateUserProfileMutation,
     useAddToCartMutation,
     useRemoveFromCartMutation,
-    useUpdateCartItemMutation
-} = userApi
+    useUpdateCartItemMutation,
+    useAddToWishlistMutation,
+    useRemoveFromWishlistMutation,
+    useGetWishlistQuery
+} = userApi;
 
-export default userApi
+export default userApi;

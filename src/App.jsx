@@ -8,7 +8,7 @@ import OrdersPage from './pages/OrdersPage/OrdersPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import LoginRegisterPage from './pages/LoginRegisterPage/LoginRegisterPage'
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
-import AdminBooksPage from './pages/AdminBooksPage/AdminBooksPage '
+import AdminBooksPage from './pages/AdminBooksPage/AdminBooksPage'
 import AdminOrdersPage from './pages/AdminOrdersPage/AdminOrdersPage'
 import AdminUsersPage from './pages/AdminUsersPage/AdminUsersPage'
 import NotFound from './pages/NotFound'
@@ -20,20 +20,20 @@ const App = () => {
   return (
     <div>
       <Header />
-      {/* <Home /> */}
-      {/* <SearchResultsPage /> */}
-      {/* <BookDetailPage /> */}
-      {/* <CartPage /> */}
-      {/* <CheckoutPage /> */}
-      {/* <OrdersPage /> */}
-      {/* <ProfilePage /> */}
+      <Home />
+      <SearchResultsPage />
+      <BookDetailPage />
+      <CartPage />
+      <CheckoutPage />
+      <OrdersPage />
+      <ProfilePage />
       <LoginRegisterPage />
-      {/* <AdminDashboard /> */}
-      {/* <AdminBooksPage /> */}
-      {/* <AdminOrdersPage /> */}
-      {/* <AdminUsersPage /> */}
-      {/* <NotFound /> */}
-      {/* <NewsletterPage /> */}
+      <AdminDashboard />
+      <AdminBooksPage />
+      <AdminOrdersPage />
+      <AdminUsersPage />
+      <NotFound />
+      <NewsletterPage />
 
       <Footer />
 
