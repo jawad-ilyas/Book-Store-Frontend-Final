@@ -9,11 +9,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           key={page}
           whileTap={{ scale: 0.95 }}
           onClick={() => onPageChange(page)}
-          className={`px-4 py-2 rounded-xl ${
-            page === currentPage
+          className={`px-4 py-2 rounded-xl ${page === currentPage
               ? "bg-teal-400 dark:bg-teal-500 text-white shadow-neu"
               : "bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-gray-100 shadow-neu"
-          }`}
+            }`}
         >
           {page}
         </motion.button>

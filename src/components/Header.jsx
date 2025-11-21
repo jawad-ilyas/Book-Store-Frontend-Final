@@ -9,7 +9,7 @@ import {
   MoonIcon,
 } from "@heroicons/react/24/outline";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Header = () => {
   const [theme, setTheme] = useState("light");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -26,7 +26,7 @@ const Header = () => {
 
     if (data?.search.trim() == 0) return
     else {
-      console.log(data?.search)
+      // console.log(data?.search)
       navigate(`/search?q=${encodeURIComponent(data?.search.trim())}`);
     }
   }
@@ -40,7 +40,7 @@ const Header = () => {
             whileHover={{ scale: 1.05 }}
             className="text-2xl font-bold text-teal-600 dark:text-teal-400"
           >
-            BookNest
+            <Link to="/">  BookNest</Link>
           </motion.div>
         </div>
 

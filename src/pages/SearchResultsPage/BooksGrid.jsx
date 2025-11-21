@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 //   // add more books dynamically
 // ];
 
-const BooksGrid = ({books}) => {
+const BooksGrid = ({ books }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {books.map((book) => (
@@ -26,6 +26,14 @@ const BooksGrid = ({books}) => {
           </h3>
           <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{book.author?.name}</p>
           <p className="text-teal-500 dark:text-teal-400 font-bold mb-3">{book.price}</p>
+          <div>
+
+
+            <span className="text-yellow-400 mr-2">
+              {"★".repeat(Math.round(book.rating)) + "☆".repeat(5 - Math.round(book.rating))}
+            </span>
+
+          </div>
           <motion.button
             whileTap={{ scale: 0.95 }}
             className="px-4 py-2 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"

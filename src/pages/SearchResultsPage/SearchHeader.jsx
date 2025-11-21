@@ -4,11 +4,11 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-const SearchHeader = ({ initialSearch }) => {
+const SearchHeader = ({ initialSearch, sort, setSort }) => {
   const [query, setQuery] = useState(initialSearch);
   const { register, setValue, handleSubmit } = useForm({ defaultValues: { search: initialSearch } })
   const navigate = useNavigate();
-  const submitHandler = (data) => { 
+  const submitHandler = (data) => {
 
     const q = data?.search.trim();
     navigate(`/search?q=${encodeURIComponent(q)}`)
@@ -38,11 +38,16 @@ const SearchHeader = ({ initialSearch }) => {
       </form>
 
       {/* Sorting Options */}
-      <select className="mt-4 md:mt-0 md:ml-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-xl shadow-neu px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none">
+      <select
+        value={sort}
+        onChange={(e) => setSort(e.target.value)}
+
+
+        className="mt-4 md:mt-0 md:ml-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-xl shadow-neu px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none">
         <option value="relevance">Relevance</option>
         <option value="price-low-high">Price: Low to High</option>
         <option value="price-high-low">Price: High to Low</option>
-        <option value="rating">Rating</option>
+        {/* <option value="rating">Rating</option> */}
       </select>
     </div>
   );

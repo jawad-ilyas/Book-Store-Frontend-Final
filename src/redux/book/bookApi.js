@@ -41,15 +41,20 @@ const bookApi = createApi({
         //     providesTags: ['Book']
         // }),
         getBooks: builder.query({
-            query: ({ search }) => {
+            query: ({ search = "", category = "", minRating = -1, limit, page }) => {
                 const params = new URLSearchParams();
-                if (search) params.append("search", search)
+
+                if (search) params.append("search", search);
+                if (category) params.append("category", category);
+                if (minRating !== -1) params.append("minRating", minRating)
+                if (limit) params.append("limit", limit)
+                if (page) params.append("page", page)
                 return {
-                    url: `/books/getBooks` + `?search=${encodeURIComponent(search)}`,
+                    url: `/books/getBooks?${params.toString()}`,   // <-- CORRECT
                     method: "GET",
-                }
+                };
             },
-            providesTags: ['Book']
+            providesTags: ["Book"],
         }),
         getBookById: builder.query({
             query: (id) => `/books/${id}`,
