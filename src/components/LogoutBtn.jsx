@@ -8,8 +8,7 @@ const LogoutBtn = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleLogout = async () => {
-        localStorage.removeItem("user")
-        localStorage.removeItem("token")
+   
         dispatch(LogoutAuthSlice())
         const response = await logout()
         if (response) {

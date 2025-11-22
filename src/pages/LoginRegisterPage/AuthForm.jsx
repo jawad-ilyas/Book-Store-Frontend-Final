@@ -26,18 +26,23 @@ const AuthForm = () => {
           autoClose: 5000,
           theme: "dark",
         });
-        navigate("/")
+        if (result) {
+       
+          navigate("/")
+        }
       } else {
         // Login case
         const result = await loginUser(data).unwrap();
         dispatch(setCredentials({ user: result.user, accessToken: result.accessToken }));
-
         toast.success(result.message || "Logged in successfully!", {
           position: "top-right",
           autoClose: 5000,
           theme: "dark",
         });
-        navigate("/")
+        if (result) {
+       
+          navigate("/")
+        }
 
       }
     } catch (error) {

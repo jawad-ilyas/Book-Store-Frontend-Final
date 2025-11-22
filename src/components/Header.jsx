@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   MagnifyingGlassIcon,
@@ -16,27 +16,47 @@ import LogoutBtn from "./LogoutBtn";
 const Header = () => {
   const [theme, setTheme] = useState("light");
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
   // Get user state from Redux
-  // const { user, isAuthorized } = useSelector((state) => state.auth);
-  let isAuthorized = false
-  const token = localStorage.getItem("accessToken")
-  if (token) {
-    isAuthorized = true
-  }
-  // Theme Toggle
+  const { user, isAuthorized } = useSelector((state) => state.auth);
+
+  // Persist theme on reload
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setTheme("dark");
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Search submit
+  const submitHandler = (data) => {
+    if (!data?.search?.trim()) return;
+    navigate(`/search?q=${encodeURIComponent(data.search.trim())}`);
+  };
+
+  // Theme toggle
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     document.documentElement.classList.toggle("dark");
-  };
-
-  const submitHandler = (data) => {
-    if (!data?.search?.trim()) return;
-    navigate(`/search?q=${encodeURIComponent(data.search.trim())}`);
+    localStorage.setItem("theme", newTheme);
   };
 
   return (
@@ -73,9 +93,9 @@ const Header = () => {
           {/* WISHLIST */}
           <motion.button whileTap={{ scale: 0.9 }} className="relative">
             <HeartIcon className="w-7 h-7 text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400 transition" />
-            {isAuthorized && (
+            {isAuthorized && user?.wishlist?.length > 0 && (
               <span className="absolute top-0 right-0 bg-teal-500 text-white text-xs px-1.5 py-0.5 rounded-full shadow">
-                2
+                {user.wishlist.length}
               </span>
             )}
           </motion.button>
@@ -85,9 +105,9 @@ const Header = () => {
             <Link to="/cart">
               <ShoppingCartIcon className="w-7 h-7 text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400 transition" />
             </Link>
-            {isAuthorized && (
+            {isAuthorized && user?.cart?.length > 0 && (
               <span className="absolute top-0 right-0 bg-teal-500 text-white text-xs px-1.5 py-0.5 rounded-full shadow">
-                2
+                {user.cart.length}
               </span>
             )}
           </motion.button>
@@ -101,27 +121,22 @@ const Header = () => {
 
               {showDropdown && (
                 <motion.div
+                  ref={dropdownRef}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute right-0 mt-3 w-48 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-2xl shadow-neu p-4 space-y-3"
                 >
-                  <Link
-                    to="/profile"
-                    className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400"
-                  >
+                  <Link onClick={() => setShowDropdown(false)} to="/profile" className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
                     Profile
                   </Link>
-                  <Link
-                    to="/orders"
-                    className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400"
-                  >
+                  <Link onClick={() => setShowDropdown(false)} to="/orders" className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
                     Orders
                   </Link>
-                  <button className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
+                  <button onClick={() => setShowDropdown(false)} className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
                     Wishlist
                   </button>
                   <hr className="border-gray-300/40 dark:border-gray-700/40" />
-                  <LogoutBtn />
+                  <LogoutBtn onLogout={() => setShowDropdown(false)} />
                 </motion.div>
               )}
             </div>
@@ -135,16 +150,8 @@ const Header = () => {
           )}
 
           {/* THEME TOGGLE */}
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={toggleTheme}
-            className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/40 dark:bg-black/40 shadow-neu cursor-pointer"
-          >
-            {theme === "light" ? (
-              <SunIcon className="w-6 h-6 text-yellow-500" />
-            ) : (
-              <MoonIcon className="w-6 h-6 text-blue-300" />
-            )}
+          <motion.button whileTap={{ scale: 0.9 }} onClick={toggleTheme} className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/40 dark:bg-black/40 shadow-neu cursor-pointer">
+            {theme === "light" ? <SunIcon className="w-6 h-6 text-yellow-500" /> : <MoonIcon className="w-6 h-6 text-blue-300" />}
           </motion.button>
 
         </div>

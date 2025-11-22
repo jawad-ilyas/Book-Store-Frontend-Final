@@ -2,20 +2,23 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const PrivateRoutes = ({ children }) => {
-    // const { isAuthorized, user } = useSelector((state) => state.auth);
-    const token = localStorage.getItem("accessToken")
-    let isAuthorized;
-    if (token) {
-        isAuthorized = true
-    }
-    // Check if user is logged in and has a valid role
-    if (isAuthorized) {
-        return children;
-    }
+const PrivateRoutes = ({ children, adminOnly = false }) => {
+  const { user, isAuthorized } = useSelector((state) => state.auth);
 
-    // Redirect to login if not authorized
-    return <Navigate to="/login" replace />;
+  // fallback to localStorage if Redux is empty (optional)
+  const token = localStorage.getItem("accessToken");
+  const localUser = JSON.parse(localStorage.getItem("user"));
+
+  const authorized = isAuthorized || (token && localUser);
+
+  if (!authorized) return <Navigate to="/login" replace />;
+
+  // Admin check
+  if (adminOnly && localUser?.role !== "admin") {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
 
 export default PrivateRoutes;

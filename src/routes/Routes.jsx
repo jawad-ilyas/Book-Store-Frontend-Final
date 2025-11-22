@@ -36,6 +36,13 @@ const router = createBrowserRouter([
             { path: "/book/:id", element: <BookDetailPage /> },
             { path: "/login", element: <LoginRegisterPage /> },
             { path: "/newsletter", element: <NewsletterPage /> },
+            {
+                path: "/profile", element:
+                    (<PrivateRoutes >
+                        < ProfilePage />
+                    </PrivateRoutes>)
+
+            },
 
             // ===========================
             // 🔒 Protected User Routes
