@@ -6,11 +6,15 @@ import PaymentMethod from "./PaymentMethod";
 import OrderSummary from "./OrderSummary";
 import { useCreateAddressMutation } from "../../redux/address/addressApi";
 import { useCreateOrderMutation } from "../../redux/order/orderApi";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage = () => {
   const { data } = useGetCartQuery();
   const cartItems = data?.cartItems?.items || [];
-
+  const navigate = useNavigate();
+  if (cartItems.length === 0) {
+    navigate("/")
+  }
   // State to store billing info
   const [billingInfo, setBillingInfo] = useState(null);
 
@@ -55,6 +59,10 @@ const CheckoutPage = () => {
       const orderResponse = await createOrder(data)
       // await new Promise((resolve) => setTimeout(resolve, 1500));
       console.log("response of the order is this ", orderResponse)
+
+      if (orderResponse?.success) {
+        navigate("/profile")
+      }
       // setStatus({ loading: false, success: "Order placed successfully!", error: null });
       // alert("Order placed successfully!");
     } catch (err) {
