@@ -23,21 +23,8 @@ const App = () => {
     <div>
       <Header />
       <Outlet />
-      {/* <Home /> */}
+  
       <ToastComponent />
-      {/* <SearchResultsPage /> */}
-      {/* <BookDetailPage /> */}
-      {/* <CartPage /> */}
-      {/* <CheckoutPage /> */}
-      {/* <OrdersPage /> */}
-      {/* <ProfilePage /> */}
-      {/* <LoginRegisterPage /> */}
-      {/* <AdminDashboard /> */}
-      {/* <AdminBooksPage /> */}
-      {/* <AdminOrdersPage /> */}
-      {/* <AdminUsersPage /> */}
-      {/* <NotFound /> */}
-      {/* <NewsletterPage /> */}
 
       <Footer />
 

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import StripeImplement from "../../components/stripe/StripeImplement";
 
-const PaymentMethod = () => {
+const PaymentMethod = ({ cartItems }) => {
   const [method, setMethod] = useState("");
 
   return (
@@ -69,10 +70,11 @@ const PaymentMethod = () => {
             exit={{ opacity: 0, y: -15 }}
             className="p-4 mt-4 rounded-xl bg-white/50 dark:bg-black/50 border border-gray-300 dark:border-gray-700"
           >
-            <p className="text-gray-800 dark:text-gray-100 text-sm">
+            {/* <p className="text-gray-800 dark:text-gray-100 text-sm">
               Stripe Payment will appear here.  
               (You will integrate Stripe Elements later.)
-            </p>
+            </p> */}
+            <StripeImplement cartItems={cartItems} />
           </motion.div>
         )}
 
@@ -85,7 +87,7 @@ const PaymentMethod = () => {
             className="p-4 mt-4 rounded-xl bg-yellow-100/60 dark:bg-yellow-900/40 border border-yellow-400"
           >
             <p className="text-gray-900 dark:text-gray-200 text-sm">
-              Cash on Delivery selected.  
+              Cash on Delivery selected.
               You will pay the amount when the order arrives.
             </p>
           </motion.div>

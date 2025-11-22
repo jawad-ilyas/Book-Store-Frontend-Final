@@ -1,20 +1,17 @@
 import React from "react";
 import { motion } from "framer-motion";
 // import { books } from "../../data";
-import { useGetCartQuery } from "../../redux/cart/cartApi";
 
-const OrderSummary = () => {
-  const { data } = useGetCartQuery();
-  const books = data?.cartItems?.items || []
-  console.log("books into summary page ", books)
-  const subtotal = books.reduce((acc, item) => acc + parseFloat(item?.bookId.price * item?.quantity), 0);
+const OrderSummary = ({ cartItems }) => {
 
- 
+  const subtotal = cartItems.reduce((acc, item) => acc + parseFloat(item?.bookId.price * item?.quantity), 0);
+
+
   return (
     <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg shadow-neu rounded-3xl p-6 flex flex-col gap-4 w-full md:w-96">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Order Summary</h2>
 
-      {books?.map((item) => (
+      {cartItems?.map((item) => (
         <div key={item?._id} className="flex justify-between text-gray-900 dark:text-gray-100">
           <span>{item?.bookId?.title}</span>
           <span>{item?.bookId?.price}</span>
