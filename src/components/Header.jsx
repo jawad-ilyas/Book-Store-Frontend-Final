@@ -99,9 +99,9 @@ const Header = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="absolute right-0 mt-3 w-48 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-2xl shadow-neu p-4 space-y-3"
               >
-                <button className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
+                <Link to="/profile" className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
                   Profile
-                </button>
+                </Link>
                 <button className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
                   Orders
                 </button>

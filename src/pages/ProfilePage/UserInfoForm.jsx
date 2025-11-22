@@ -1,14 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-
+import { useUpdateUserProfileMutation } from "../../redux/user/userApi.js"
 const UserInfoForm = ({ user, onUpdate }) => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: { name: user.name, email: user.email },
   });
-
+  const [updateUserProfile] = useUpdateUserProfileMutation();
   const onSubmit = (data) => {
-    onUpdate(data);
+    updateUserProfile(data)
   };
 
   return (
@@ -18,16 +18,17 @@ const UserInfoForm = ({ user, onUpdate }) => {
       <input
         {...register("name", { required: true })}
         placeholder="Full Name"
-        className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${
-          errors.name ? "border-2 border-red-500" : ""
-        }`}
+        defaultValue={user?.name}
+        className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${errors.name ? "border-2 border-red-500" : ""
+          }`}
       />
       <input
         {...register("email", { required: true })}
         placeholder="Email"
-        className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${
-          errors.email ? "border-2 border-red-500" : ""
-        }`}
+        defaultValue={user?.email}
+        readOnly
+        className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${errors.email ? "border-2 border-red-500" : ""
+          }`}
       />
 
       <motion.button

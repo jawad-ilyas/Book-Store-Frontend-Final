@@ -6,9 +6,9 @@ import orderApi from "./order/orderApi";
 import bannerApi from "./banner/bannerApi";
 import categoryApi from "./category/categoryApi";
 import newsletterApi from "./newsletter/newsletterApi";
-import reviewApi from "./reviews/reviewsApi";
 import cartApi from "./cart/cartApi";
 import addressApi from "./address/addressApi";
+import reviewApi from "./reviews/reviewsApi";
 
 
 const store = configureStore({
@@ -21,6 +21,7 @@ const store = configureStore({
         [newsletterApi.reducerPath]: newsletterApi.reducer,
         [cartApi.reducerPath]: cartApi.reducer,
         [addressApi.reducerPath]: addressApi.reducer,
+        [reviewApi.reducerPath]: reviewApi.reducer,
         auth: authSlice,
     },
     middleware: (getDefaultMiddleware) =>

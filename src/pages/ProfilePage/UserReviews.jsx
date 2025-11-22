@@ -1,7 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useGetReviewsByUserQuery } from "../../redux/reviews/reviewsApi";
 
-const UserReviews = ({ reviews }) => {
+const UserReviews = () => {
+
+  const { data } = useGetReviewsByUserQuery();
+  const reviews = data?.userReview || []
   return (
     <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg shadow-neu rounded-2xl p-6 flex flex-col gap-4">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">My Reviews</h2>

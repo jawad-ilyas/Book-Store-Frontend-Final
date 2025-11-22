@@ -42,40 +42,21 @@ const userApi = createApi({
             providesTags: ['User']
         }),
         updateUserProfile: builder.mutation({
-            query: ({ id, data }) => ({
-                url: `/users/updateUserProfile/${id}`,
+            query: (data) => ({
+                url: `/users/updateUserProfile`,
                 method: "PUT",
                 body: data
             }),
             invalidatesTags: ['User']
         }),
-
-        // Cart
-        addToCart: builder.mutation({
-            query: (data) => ({
-                url: "/users/cart/add",
-                method: "POST",
-                body: data
+        updateImage: builder.mutation({
+            query: (body) => ({
+                url: "/users/updateImage",
+                method: 'PUT',
+                body
             }),
             invalidatesTags: ['User']
         }),
-        removeFromCart: builder.mutation({
-            query: (data) => ({
-                url: "/users/cart/remove",
-                method: "PUT",
-                body: data
-            }),
-            invalidatesTags: ['User']
-        }),
-        updateCartItem: builder.mutation({
-            query: (data) => ({
-                url: "/users/cart/update",
-                method: "PUT",
-                body: data
-            }),
-            invalidatesTags: ['User']
-        }),
-
         // Wishlist
         addToWishlist: builder.mutation({
             query: (data) => ({
@@ -106,9 +87,7 @@ export const {
     useLoginUserMutation,
     useGetProfileQuery,
     useUpdateUserProfileMutation,
-    useAddToCartMutation,
-    useRemoveFromCartMutation,
-    useUpdateCartItemMutation,
+    useUpdateImageMutation,
     useAddToWishlistMutation,
     useRemoveFromWishlistMutation,
     useGetWishlistQuery

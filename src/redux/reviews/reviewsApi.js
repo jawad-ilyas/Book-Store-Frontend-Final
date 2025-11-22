@@ -37,6 +37,10 @@ const reviewApi = createApi({
             query: (id) => `/reviews/book/${id}`,
             providesTags: ['Review']
         }),
+        getReviewsByUser: builder.query({
+            query: () => `/reviews/user`,
+            providesTags: ['Review']
+        }),
 
         /**
          * Add a new review for a book
@@ -56,7 +60,8 @@ const reviewApi = createApi({
 // Export hooks for functional components
 export const {
     useGetReviewsByBookQuery,
-    useAddReviewMutation
+    useAddReviewMutation,
+    useGetReviewsByUserQuery
 } = reviewApi;
 
 export default reviewApi;
