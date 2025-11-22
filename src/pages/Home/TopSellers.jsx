@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useGetTopSellersQuery } from "../../redux/book/bookApi";
 import { Link } from "react-router-dom";
+import AddToCartBtn from "../../components/AddToCartBtn";
 
 
 
@@ -31,12 +32,7 @@ const TopSellers = () => {
             <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{book.category?.name}</p>
             <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{book.author?.name}</p>
             <p className="text-teal-500 dark:text-teal-400 font-bold mb-3">{book.price}</p>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
-            >
-              Add to Cart
-            </motion.button>
+            <AddToCartBtn bookId={book?._id} />
           </motion.div>
         ))}
       </div>

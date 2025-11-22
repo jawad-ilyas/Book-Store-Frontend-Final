@@ -7,6 +7,7 @@ import bannerApi from "./banner/bannerApi";
 import categoryApi from "./category/categoryApi";
 import newsletterApi from "./newsletter/newsletterApi";
 import reviewApi from "./reviews/reviewsApi";
+import cartApi from "./cart/cartApi";
 
 
 const store = configureStore({
@@ -17,11 +18,11 @@ const store = configureStore({
         [bannerApi.reducerPath]: bannerApi.reducer,
         [categoryApi.reducerPath]: categoryApi.reducer,
         [newsletterApi.reducerPath]: newsletterApi.reducer,
-        [reviewApi.reducerPath]: reviewApi.reducer,
+        [cartApi.reducerPath]: cartApi.reducer,
         auth: authSlice,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(bookApi.middleware, userApi.middleware, orderApi.middleware, bannerApi.middleware, categoryApi.middleware, newsletterApi.middleware, reviewApi.middleware)
+        getDefaultMiddleware().concat(bookApi.middleware, userApi.middleware, orderApi.middleware, bannerApi.middleware, categoryApi.middleware, newsletterApi.middleware, reviewApi.middleware, cartApi.middleware)
 })
 
 

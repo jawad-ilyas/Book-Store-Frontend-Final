@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const CartSummary = ({ cartItems, onCheckout }) => {
   const subtotal = cartItems.reduce(
-    (acc, item) => acc + parseFloat(item.price.replace("$", "")) * item.quantity,
+    (acc, item) => acc + parseFloat(item.bookId.price) * item.quantity,
     0
   );
 
@@ -11,7 +11,7 @@ const CartSummary = ({ cartItems, onCheckout }) => {
       <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Summary</h2>
       <div className="flex justify-between text-gray-900 dark:text-gray-100">
         <span>Subtotal</span>
-        <span>${subtotal.toFixed(2)}</span>
+        <span>${subtotal}</span>
       </div>
       <div className="flex justify-between text-gray-900 dark:text-gray-100">
         <span>Shipping</span>
@@ -19,7 +19,7 @@ const CartSummary = ({ cartItems, onCheckout }) => {
       </div>
       <div className="flex justify-between font-bold text-xl text-gray-900 dark:text-gray-100">
         <span>Total</span>
-        <span>${(subtotal + 5).toFixed(2)}</span>
+        <span>${(subtotal + 5)}</span>
       </div>
 
       <motion.button
