@@ -1,8 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
+// import { books } from "../../data";
 
-const OrderSummary = ({ cartItems, onConfirm, loading }) => {
+const OrderSummary = ({ cartItems }) => {
+
   const subtotal = cartItems.reduce((acc, item) => acc + parseFloat(item?.bookId.price * item?.quantity), 0);
+
 
   return (
     <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg shadow-neu rounded-3xl p-6 flex flex-col gap-4 w-full md:w-96">
@@ -11,7 +14,7 @@ const OrderSummary = ({ cartItems, onConfirm, loading }) => {
       {cartItems?.map((item) => (
         <div key={item?._id} className="flex justify-between text-gray-900 dark:text-gray-100">
           <span>{item?.bookId?.title}</span>
-          <span>${item?.bookId?.price}</span>
+          <span>{item?.bookId?.price}</span>
         </div>
       ))}
 
@@ -22,11 +25,9 @@ const OrderSummary = ({ cartItems, onConfirm, loading }) => {
 
       <motion.button
         whileTap={{ scale: 0.95 }}
-        onClick={onConfirm}
-        disabled={loading}
-        className="px-6 py-3 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition mt-4 disabled:opacity-50"
+        className="px-6 py-3 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition mt-4"
       >
-        {loading ? "Processing..." : "Confirm Order"}
+        Confirm Order
       </motion.button>
     </div>
   );

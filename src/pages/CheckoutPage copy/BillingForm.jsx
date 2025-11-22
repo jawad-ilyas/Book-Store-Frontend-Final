@@ -3,13 +3,14 @@ import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 
 const BillingForm = ({ onSubmitForm }) => {
-  const { register, handleSubmit, formState: { errors }, watch } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const user = JSON.parse(localStorage.getItem("user")) || {};
+  // Get user info from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  // Watch all fields and send to parent whenever form is submitted
   const onSubmit = (data) => {
-    if (onSubmitForm) onSubmitForm(data);
+    console.log("Billing Info:", data);
+    if (onSubmitForm) onSubmitForm(data); // pass data to parent
   };
 
   return (
@@ -22,17 +23,18 @@ const BillingForm = ({ onSubmitForm }) => {
       </h2>
 
       {/* Name */}
-      {/* <input
+      <input
         {...register("name", { required: true })}
         placeholder="Full Name"
-        defaultValue={user.name || ""}
+        defaultValue={user?.name}
         className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${errors.name ? "border-2 border-red-500" : ""}`}
-      /> */}
+      />
 
       {/* Email */}
       <input
+        {...register("email", { required: true })}
         placeholder="Email Address"
-        value={user.email || ""}
+        value={user?.email}
         readOnly
         className={`p-3 rounded-xl bg-white/50 dark:bg-black/50 text-gray-900 dark:text-gray-100 shadow-neu focus:ring-2 focus:ring-teal-400 transition ${errors.email ? "border-2 border-red-500" : ""}`}
       />

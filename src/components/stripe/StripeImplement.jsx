@@ -5,11 +5,10 @@ import axios from "axios";
 const CARD_ELEMENT_OPTIONS = {
   style: {
     base: {
-      fontSize: "18px",
+      fontSize: "16px",
       color: "#424770",
       fontWeight: "500",
-      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      "::placeholder": { color: "#aab7c4", opacity: 1 },
+      "::placeholder": { color: "#aab7c4" },
       letterSpacing: "0.5px",
     },
     invalid: { color: "#9e2146", iconColor: "#9e2146" },
@@ -17,80 +16,61 @@ const CARD_ELEMENT_OPTIONS = {
   hidePostalCode: true,
 };
 
-const StripeImplement = ({ cartItems }) => {
+const StripeImplement = ({ cartItems,setpaymentMethodReseponse, billingInfo, onPaymentResult }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
-  const amount = cartItems.reduce((acc, item) => acc + 10 * 10, 0) * 100;
+  const amount = cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) * 100;
 
-  const handleSubmit = async (e) => {
+  const handlePayment = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
     setError(null);
 
     try {
-      const { data } = await axios.post(
-        "http://localhost:3000/api/payments/create-payment-intent",
-        { amount }
-      );
+      // 1. Create payment intent on backend
+      const { data } = await axios.post("http://localhost:3000/api/payments/create-payment-intent", { amount });
 
+      // 2. Confirm card payment
       const result = await stripe.confirmCardPayment(data.clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement),
+          billing_details: {
+            name: billingInfo.name,
+            email: billingInfo.email,
+          },
         },
       });
-      console.log("result of the card " , result)
+      setpaymentMethodReseponse(result)
       if (result.error) {
         setError(result.error.message);
-        setSuccess(false);
+        onPaymentResult({ success: false, message: result.error.message });
       } else if (result.paymentIntent.status === "succeeded") {
-        setSuccess(true);
-        setError(null);
+        onPaymentResult({ success: true });
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Payment failed");
+      setError(err.response?.data?.message || err.message);
+      onPaymentResult({ success: false, message: err.response?.data?.message || err.message });
     } finally {
       setIsProcessing(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: "400px", margin: "20px auto" }}>
-      <div
-        style={{
-          border: "1px solid #ccc",
-          borderRadius: "15px",
-          padding: "20px",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-          background: "linear-gradient(135deg, #f9f9f9, #e0e0e0)",
-        }}
-      >
+    <form onSubmit={handlePayment} className="flex flex-col gap-4">
+      <div className="p-4 rounded-xl bg-white/50 dark:bg-black/50 shadow-neu">
         <CardElement options={CARD_ELEMENT_OPTIONS} />
       </div>
       <button
         type="submit"
         disabled={!stripe || isProcessing}
-        style={{
-          marginTop: "20px",
-          width: "100%",
-          padding: "12px",
-          fontSize: "16px",
-          fontWeight: "bold",
-          color: "#fff",
-          background: "#5469d4",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-        }}
+        className="mt-4 px-6 py-3 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
       >
         {isProcessing ? "Processing..." : `Pay $${amount / 100}`}
       </button>
-      {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-      {success && <p style={{ color: "green", marginTop: "10px" }}>Payment successful!</p>}
+      {error && <p className="text-red-500">{error}</p>}
     </form>
   );
 };
