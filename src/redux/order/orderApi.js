@@ -52,6 +52,10 @@ const orderApi = createApi({
             query: () => '/orders/',
             providesTags: ['Orders']
         }),
+        getOrdersByUser: builder.query({
+            query: () => '/orders/user',
+            providesTags: ['Orders']
+        }),
 
         /**
          * Fetch order by ID
@@ -66,11 +70,12 @@ const orderApi = createApi({
 });
 
 // Export hooks for usage in functional components
-export const { 
-    useCreateOrderMutation, 
-    useGetOrderByIdQuery, 
-    useGetAllOrdersQuery, 
-    useLazyGetAllOrdersQuery 
+export const {
+    useCreateOrderMutation,
+    useGetOrderByIdQuery,
+    useGetAllOrdersQuery,
+    useLazyGetAllOrdersQuery,
+    useGetOrdersByUserQuery
 } = orderApi;
 
 export default orderApi;

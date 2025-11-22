@@ -5,8 +5,10 @@ import { useLoginUserMutation, useRegisterUserMutation } from "../../redux/user/
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/auth/authSlice";
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [registerUser, { isLoading, isError }] = useRegisterUserMutation();
@@ -24,7 +26,7 @@ const AuthForm = () => {
           autoClose: 5000,
           theme: "dark",
         });
-
+        navigate("/")
       } else {
         // Login case
         const result = await loginUser(data).unwrap();
@@ -35,6 +37,8 @@ const AuthForm = () => {
           autoClose: 5000,
           theme: "dark",
         });
+        navigate("/")
+
       }
     } catch (error) {
       // 🔹 RTK Query error handling

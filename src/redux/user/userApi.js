@@ -35,6 +35,14 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
+        logout: builder.mutation({
+            query: () => ({
+                url: "/auth/logout",
+                method: "POST",
+             
+            }),
+            invalidatesTags: ['User']
+        }),
 
         // Profile
         getProfile: builder.query({
@@ -83,6 +91,7 @@ const userApi = createApi({
 
 // Export hooks
 export const {
+    useLogoutMutation,
     useRegisterUserMutation,
     useLoginUserMutation,
     useGetProfileQuery,

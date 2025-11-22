@@ -23,34 +23,55 @@ import Footer from "../components/Footer";
 import ToastComponent from "../components/ToastComponent";
 import App from "../App";
 import { CreateBanner, CreateCategory } from "../components/admin";
-
+import PrivateRoutes from "./PrivateRoutes";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
         children: [
+            // Public routes
             { path: "/", element: <Home /> },
             { path: "/search", element: <SearchResultsPage /> },
             { path: "/book/:id", element: <BookDetailPage /> },
-            { path: "/cart", element: <CartPage /> },
-            { path: "/checkout", element: <CheckoutPage /> },
-            { path: "/orders", element: <OrdersPage /> },
-            { path: "/profile", element: <ProfilePage /> },
             { path: "/login", element: <LoginRegisterPage /> },
             { path: "/newsletter", element: <NewsletterPage /> },
-            // Admin routes
-            { path: "/admin/dashboard", element: <AdminDashboard /> },
-            { path: "/admin/books", element: <AdminBooksPage /> },
-            { path: "/admin/orders", element: <AdminOrdersPage /> },
-            { path: "/admin/users", element: <AdminUsersPage /> },
-            { path: "/admin/createbanner", element: <CreateBanner /> },
-            { path: "/admin/createcategory", element: <CreateCategory /> },
-            // 404
+
+            // ===========================
+            // 🔒 Protected User Routes
+            // ===========================
+            {
+                element: <PrivateRoutes />,   // Wrap once — cleaner!
+                children: [
+                    { path: "/cart", element: <CartPage /> },
+                    { path: "/checkout", element: <CheckoutPage /> },
+                    { path: "/orders", element: <OrdersPage /> },
+                    { path: "/profile", element: <ProfilePage /> },
+                ]
+            },
+
+            // ===========================
+            // 🔒 Protected Admin Routes
+            // (Should ideally check admin role inside PrivateRoutes)
+            // ===========================
+            {
+                element: <PrivateRoutes />,
+                children: [
+                    { path: "/admin/dashboard", element: <AdminDashboard /> },
+                    { path: "/admin/books", element: <AdminBooksPage /> },
+                    { path: "/admin/orders", element: <AdminOrdersPage /> },
+                    { path: "/admin/users", element: <AdminUsersPage /> },
+                    { path: "/admin/createbanner", element: <CreateBanner /> },
+                    { path: "/admin/createcategory", element: <CreateCategory /> },
+                ]
+            },
+
+            // 404 Page
             { path: "*", element: <NotFound /> },
         ],
     },
 ]);
+
 
 
 

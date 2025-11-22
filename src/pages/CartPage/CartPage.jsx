@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { books } from "../../data"; // Import from single data file
 import CartList from "./CartList";
 import CartSummary from "./CartSummary";
 import { useGetCartQuery, useRemoveFromCartMutation, useUpdateCartItemMutation } from "../../redux/cart/cartApi";
 
 const CartPage = () => {
-  // Example cart state 
-  // const [cartItems, setCartItems] = useState(
-  //   books.map((book) => ({ ...book, quantity: 1 })) // demo: all books in cart initially
-  // );
 
 
   const { data } = useGetCartQuery();
