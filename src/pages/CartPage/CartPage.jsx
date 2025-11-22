@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { books } from "../../data"; // Import from single data file
 import CartList from "./CartList";
 import CartSummary from "./CartSummary";
-import { useGetCartQuery } from "../../redux/cart/cartApi";
+import { useGetCartQuery, useRemoveFromCartMutation, useUpdateCartItemMutation } from "../../redux/cart/cartApi";
 
 const CartPage = () => {
   // Example cart state 
@@ -13,7 +13,8 @@ const CartPage = () => {
 
 
   const { data } = useGetCartQuery();
-
+  const [removeFromCart] = useRemoveFromCartMutation()
+  const [updateCartItem] = useUpdateCartItemMutation()
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
@@ -21,20 +22,31 @@ const CartPage = () => {
       setCartItems(data.cartItems.items);
     }
   }, [data]);
+  let debounceTimer;
 
-  const handleQuantityChange = (id, qty) => {
+  const handleQuantityChange = (id, qty, bookId) => {
+    // console.log("item id into quanity change ", id, qty, bookId)
     setCartItems(prev =>
       prev.map(item =>
         item._id === id ? { ...item, quantity: Number(qty) } : item
       )
     );
+
+
+    // clear previous timer
+    clearTimeout(debounceTimer);
+
+    // start new timer
+    debounceTimer = setTimeout(() => {
+      updateCartItem({ bookId: bookId, quantity: Number(qty) });
+    }, 2000); // 600ms delay
   };
   const handleRemove = (id) => {
-    // setCartItems((prev) => prev.filter((item) => item.id !== id));
+    removeFromCart({ bookId: id })
   };
 
   const handleCheckout = () => {
-    
+
     alert("Proceeding to checkout!");
   };
 

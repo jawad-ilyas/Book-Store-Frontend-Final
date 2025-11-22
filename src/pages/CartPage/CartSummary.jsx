@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const CartSummary = ({ cartItems, onCheckout }) => {
   const subtotal = cartItems.reduce(
@@ -27,7 +28,7 @@ const CartSummary = ({ cartItems, onCheckout }) => {
         onClick={onCheckout}
         className="px-6 py-3 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
       >
-        Proceed to Checkout
+        <Link to='/checkout'> Proceed to Checkout</Link>
       </motion.button>
     </div>
   );
