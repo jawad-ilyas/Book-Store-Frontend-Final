@@ -66,7 +66,6 @@ const SearchResultsPage = () => {
               totalPages={data?.totalPages || 1}
               onPageChange={setCurrentPage}
 
-
             />
           </div>
         </div>

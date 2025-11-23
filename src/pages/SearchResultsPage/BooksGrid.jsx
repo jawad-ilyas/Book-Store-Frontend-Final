@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import HandleDeleteBookBtn from "../../components/HandleDeleteBookBtn";
 
-// Sample book data
-// const books = [
-//   { id: 1, title: "Atomic Habits", author: "James Clear", price: "$15.99", image: "/books/atomic-habits.jpg" },
-//   { id: 2, title: "Educated", author: "Tara Westover", price: "$14.50", image: "/books/educated.jpg" },
-//   // add more books dynamically
-// ];
 
 const BooksGrid = ({ books }) => {
+
+
+  const { user } = useSelector(state => state?.auth)
+  console.log("user", user)
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {books.map((book) => (
@@ -34,12 +34,23 @@ const BooksGrid = ({ books }) => {
             </span>
 
           </div>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            className="px-4 py-2 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
-          >
-            Add to Cart
-          </motion.button>
+          {user?.role !== "admin" ?
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-2 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
+            >
+              Add to Cart
+            </motion.button>
+            : <div className="flex gap-2 mt-2">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                className="px-3 py-1 rounded-xl bg-blue-400 dark:bg-blue-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
+              >
+                Edit
+              </motion.button>
+              <HandleDeleteBookBtn bookId={book?._id} />
+            </div>}
+
         </motion.div>
       ))}
     </div>

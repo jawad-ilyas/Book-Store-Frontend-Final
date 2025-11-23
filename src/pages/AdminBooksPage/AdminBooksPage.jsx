@@ -3,23 +3,32 @@ import BooksList from "../../components/BooksList";
 import BookFormModal from "../../components/BookFormModal";
 import { books as initialBooks } from "../../data";
 import AdminLayout from "../../components/AdminLayout";
+import { Link } from "react-router-dom";
+import { useGetBooksQuery } from "../../redux/book/bookApi";
+import Pagination from "../SearchResultsPage/Pagination";
+import BooksGrid from "../SearchResultsPage/BooksGrid";
 
 const AdminBooksPage = () => {
-  const [books, setBooks] = useState(initialBooks);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingBook, setEditingBook] = useState(null);
+  // const [books, setBooks] = useState(initialBooks);
 
-  const handleAddBook = (data) => {
-    const newBook = { id: Date.now(), ...data };
-    setBooks([newBook, ...books]);
-  };
+  const itemsPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const handleEditBook = (data) => {
-    setBooks(books.map((b) => (b.id === editingBook.id ? { ...b, ...data } : b)));
-    setEditingBook(null);
-  };
+  // console.log("query data  ", query)
+  // console.log("query data  searchTerm", searchTerm)
 
-  const handleDeleteBook = (id) => setBooks(books.filter((b) => b.id !== id));
+  // this query is for the show books to user 
+  const { data, isError, isLoading } = useGetBooksQuery({
+    search: "",
+    category: "",
+    minRating: -1,
+    page: currentPage,
+    limit: itemsPerPage,
+  })
+
+  const books = data?.books || []
+
+
 
   return (
     <AdminLayout>
@@ -29,20 +38,24 @@ const AdminBooksPage = () => {
         <div className="flex justify-end mb-6">
           <button
             className="px-6 py-3 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
-            onClick={() => setIsModalOpen(true)}
+
           >
-            Add New Book
+            <Link to="/admin/books/add" >Add New Book</Link>
           </button>
         </div>
 
-        <BooksList books={books} onEdit={(book) => { setEditingBook(book); setIsModalOpen(true); }} onDelete={handleDeleteBook} />
+        {/* <BooksList books={books} /> */}
+        <BooksGrid books={books} />
 
-        <BookFormModal
-          isOpen={isModalOpen}
-          onClose={() => { setIsModalOpen(false); setEditingBook(null); }}
-          onSubmit={editingBook ? handleEditBook : handleAddBook}
-          defaultValues={editingBook}
-        />
+        <div className="mt-8">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={data?.totalPages || 1}
+            onPageChange={setCurrentPage}
+
+          />
+        </div>
+
       </div>
     </AdminLayout>
   );
