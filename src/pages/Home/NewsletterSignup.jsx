@@ -16,8 +16,7 @@ const NewsletterSignup = () => {
     console.log("data of the newsletter ", response)
     // reset(); // Reset form after submission
   };
-  const { data } = useGetAllNewsLetterQuery();
-  const news = data?.news || []
+ 
   return (
     <section className="my-16 px-6 flex justify-center">
       <motion.div
@@ -59,11 +58,7 @@ const NewsletterSignup = () => {
           <p className="text-green-500 mt-2 text-sm">Subscribed successfully!</p>
         )}
       </motion.div>
-      <div className="block">
-        {news && news?.map((item) => {
-          return <p key={item?.email}>{item?.email}</p>
-        })}
-      </div>
+  
     </section>
   );
 };

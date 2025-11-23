@@ -2,7 +2,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import StripeImplement from "../../components/stripe/StripeImplement";
 
-const PaymentMethod = ({ cartItems,setpaymentMethodReseponse, selectedMethod, setSelectedMethod, billingInfo, setPaymentSuccess, setStatus }) => {
+const PaymentMethod = ({ cartItems, setpaymentMethodReseponse, selectedMethod, setSelectedMethod, billingInfo, setPaymentSuccess, setStatus }) => {
 
   const handleStripeResult = (result) => {
     if (result.success) {
@@ -74,12 +74,12 @@ const PaymentMethod = ({ cartItems,setpaymentMethodReseponse, selectedMethod, se
             exit={{ opacity: 0, y: -15 }}
             className="p-4 mt-4 rounded-xl bg-white/50 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 transition-colors"
           >
-            <StripeImplement
+            {/* <StripeImplement
               cartItems={cartItems}
               billingInfo={billingInfo}
               setpaymentMethodReseponse={setpaymentMethodReseponse}
               onPaymentResult={handleStripeResult}
-            />
+            /> */}
           </motion.div>
         )}
 

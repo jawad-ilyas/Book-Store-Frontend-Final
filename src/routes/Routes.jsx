@@ -36,13 +36,7 @@ const router = createBrowserRouter([
             { path: "/book/:id", element: <BookDetailPage /> },
             { path: "/login", element: <LoginRegisterPage /> },
             { path: "/newsletter", element: <NewsletterPage /> },
-            {
-                path: "/profile", element:
-                    (<PrivateRoutes >
-                        < ProfilePage />
-                    </PrivateRoutes>)
 
-            },
 
             // ===========================
             // 🔒 Protected User Routes
@@ -50,6 +44,7 @@ const router = createBrowserRouter([
             {
                 element: <PrivateRoutes />,   // Wrap once — cleaner!
                 children: [
+                    { path: "/profile", element: <ProfilePage /> },
                     { path: "/cart", element: <CartPage /> },
                     { path: "/checkout", element: <CheckoutPage /> },
                     { path: "/orders", element: <OrdersPage /> },
@@ -62,7 +57,7 @@ const router = createBrowserRouter([
             // (Should ideally check admin role inside PrivateRoutes)
             // ===========================
             {
-                element: <PrivateRoutes />,
+                element: <PrivateRoutes adminOnly={true} />,
                 children: [
                     { path: "/admin/dashboard", element: <AdminDashboard /> },
                     { path: "/admin/books", element: <AdminBooksPage /> },

@@ -11,6 +11,7 @@ const PrivateRoutes = ({ children, adminOnly = false }) => {
 
     const authorized = isAuthorized || (token && localUser);
 
+
     if (!authorized) return <Navigate to="/login" replace />;
 
     // Admin check
