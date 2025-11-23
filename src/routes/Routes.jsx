@@ -22,7 +22,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ToastComponent from "../components/ToastComponent";
 import App from "../App";
-import { CreateBanner, CreateCategory } from "../components/admin";
+import { AddBook, CreateBanner, CreateCategory } from "../components/admin";
 import PrivateRoutes from "./PrivateRoutes";
 
 const router = createBrowserRouter([
@@ -61,9 +61,10 @@ const router = createBrowserRouter([
                 children: [
                     { path: "/admin/dashboard", element: <AdminDashboard /> },
                     { path: "/admin/books", element: <AdminBooksPage /> },
+                    { path: "/admin/books/add", element: <AddBook /> },
                     { path: "/admin/orders", element: <AdminOrdersPage /> },
                     { path: "/admin/users", element: <AdminUsersPage /> },
-                    { path: "/admin/createbanner", element: <CreateBanner /> },
+                    { path: "/admin/banners/add", element: <CreateBanner /> },
                     { path: "/admin/createcategory", element: <CreateCategory /> },
                 ]
             },

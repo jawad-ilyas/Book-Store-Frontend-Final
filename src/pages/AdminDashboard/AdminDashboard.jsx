@@ -1,30 +1,74 @@
 import React from "react";
+import AdminLayout from "../../components/AdminLayout";
 import MetricCard from "../../components/MetricCard";
 import AnalyticsChart from "../../components/AnalyticsChart";
-import { UserIcon, ShoppingCartIcon, CurrencyDollarIcon, BookOpenIcon } from "@heroicons/react/24/outline";
+import {
+  UserIcon,
+  ShoppingCartIcon,
+  CurrencyDollarIcon,
+  BookOpenIcon
+} from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
+import { useGetAdminAnalyticsQuery } from "../../redux/admin/adminApi";
 
 const AdminDashboard = () => {
+  const { data } = useGetAdminAnalyticsQuery();
+  const analytics = data?.analytics;
+  const chartData = analytics?.monthlySalesHistory || [];
+
   const metrics = [
-    { title: "Total Users", value: 1200, icon: <UserIcon className="w-10 h-10" /> },
-    { title: "Orders", value: 450, icon: <ShoppingCartIcon className="w-10 h-10" /> },
-    { title: "Income", value: "$12,300", icon: <CurrencyDollarIcon className="w-10 h-10" /> },
-    { title: "Books", value: 320, icon: <BookOpenIcon className="w-10 h-10" /> },
+    {
+      title: "Total Users",
+      value: analytics?.totalUsers ?? 0,
+      icon: <UserIcon className="w-10 h-10" />,
+      link: "/admin/users",
+    },
+    {
+      title: "Total Orders",
+      value: analytics?.totalOrders ?? 0,
+      icon: <ShoppingCartIcon className="w-10 h-10" />,
+      link: "/admin/orders",
+    },
+    {
+      title: "Total Income",
+      value: `$${analytics?.totalIncome?.toFixed(2) ?? "0.00"}`,
+      icon: <CurrencyDollarIcon className="w-10 h-10" />,
+      link: "/admin/earnings",
+    },
+    {
+      title: "Monthly Sales",
+      value: `$${analytics?.monthlySales?.toFixed(2) ?? "0.00"}`,
+      icon: <CurrencyDollarIcon className="w-10 h-10" />,
+      link: "/admin/sales/monthly",
+    },
+    {
+      title: "Daily Sales",
+      value: `$${analytics?.dailySales?.toFixed(2) ?? "0.00"}`,
+      icon: <CurrencyDollarIcon className="w-10 h-10" />,
+      link: "/admin/sales/daily",
+    },
+    {
+      title: "Books (Top Selling)",
+      value: analytics?.bestSellingBooks?.length ?? 0,
+      icon: <BookOpenIcon className="w-10 h-10" />,
+      link: "/admin/books",
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-500 px-6 py-12">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-12 text-center">Admin Dashboard</h1>
-
+    <AdminLayout>
       {/* Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         {metrics.map((metric, idx) => (
-          <MetricCard key={idx} {...metric} />
+          <Link key={idx} to={metric.link}>
+            <MetricCard {...metric} />
+          </Link>
         ))}
       </div>
 
-      {/* Analytics Chart */}
-      <AnalyticsChart />
-    </div>
+      {/* Chart */}
+      <AnalyticsChart chartData={chartData} />
+    </AdminLayout>
   );
 };
 

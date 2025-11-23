@@ -21,25 +21,7 @@ const bookApi = createApi({
     tagTypes: ['Book'],
     endpoints: (builder) => ({
 
-        // getBooks: builder.query({
-        //     // query: ({ search = "", category = "", minPrice = 0, maxPrice = 99999999999999, minRating = 0 }) => {
-        //     query: () => {
-
-        //         // const params = new URLSearchParams();
-
-        //         // if (search) params.append("search", search);
-        //         // if (category) params.append("category", category);
-        //         // if (minPrice) params.append("minPrice", minPrice);
-        //         // if (maxPrice) params.append("maxPrice", maxPrice);
-        //         // if (minRating) params.append("minRating", minRating)
-
-        //         return {
-        //             url: `/books/getBooks`,
-        //             method: "GET",
-        //         }
-        //     },
-        //     providesTags: ['Book']
-        // }),
+     
         getBooks: builder.query({
             query: ({ search = "", category = "", minRating = -1, limit, page }) => {
                 const params = new URLSearchParams();
