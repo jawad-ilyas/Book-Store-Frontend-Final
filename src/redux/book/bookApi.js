@@ -21,7 +21,7 @@ const bookApi = createApi({
     tagTypes: ['Book'],
     endpoints: (builder) => ({
 
-     
+
         getBooks: builder.query({
             query: ({ search = "", category = "", minRating = -1, limit, page }) => {
                 const params = new URLSearchParams();
@@ -45,15 +45,28 @@ const bookApi = createApi({
 
         getTopSellers: builder.query({
             query: () => "/books/getTopSellers",
+            providesTags: ["Book"],
+
         }),
 
         getRecommendedBooks: builder.query({
             query: () => "/books/getRecommendedBooks",
+            providesTags: ["Book"],
+
         }),
 
+        createBook: builder.mutation({
+            query: (data) => ({
+                url: "/books/admin/createBook",
+                method: "POST",
+                body: data
+
+            }),
+            invalidatesTags: ['Book']
+        })
 
     })
 })
 
-export const { useGetBooksQuery, useGetBookByIdQuery, useGetTopSellersQuery, useGetRecommendedBooksQuery } = bookApi
+export const { useGetBooksQuery, useGetBookByIdQuery, useGetTopSellersQuery, useGetRecommendedBooksQuery, useCreateBookMutation } = bookApi
 export default bookApi

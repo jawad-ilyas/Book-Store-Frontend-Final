@@ -67,6 +67,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                     {openMenu === "books" && (
                         <ul className="ml-10 mt-1 space-y-1">
+                            <li><Link to="/admin/books" className="block py-2" onClick={handleLinkClick}>Books</Link></li>
                             <li><Link to="/admin/books/add" className="block py-2" onClick={handleLinkClick}>Add Book</Link></li>
                             <li><Link to="/admin/books/update" className="block py-2" onClick={handleLinkClick}>Update Book</Link></li>
                             <li><Link to="/admin/books/delete" className="block py-2" onClick={handleLinkClick}>Delete Book</Link></li>
