@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import HandleDeleteBookBtn from "../../components/HandleDeleteBookBtn";
+import { Link } from "react-router-dom";
 
 
 const BooksGrid = ({ books }) => {
@@ -46,7 +47,7 @@ const BooksGrid = ({ books }) => {
                 whileTap={{ scale: 0.95 }}
                 className="px-3 py-1 rounded-xl bg-blue-400 dark:bg-blue-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
               >
-                Edit
+                <Link to={`/admin/books/update/${book?._id}`}>Edit</Link>
               </motion.button>
               <HandleDeleteBookBtn bookId={book?._id} />
             </div>}

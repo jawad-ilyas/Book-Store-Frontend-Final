@@ -9,16 +9,16 @@ import router from './routes/Routes.jsx'
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 // console.log("stripe promise ", stripePromise)
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Elements stripe={stripePromise}>
-      <Provider store={store}>
-        <RouterProvider router={router}>
-          <App />
-        </RouterProvider>
-      </Provider>
-    </Elements>
+    {/* <Elements stripe={stripePromise}> */}
+    <Provider store={store}>
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>
+    </Provider>
+    {/* </Elements> */}
   </StrictMode>,
 )

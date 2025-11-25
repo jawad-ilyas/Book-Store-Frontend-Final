@@ -72,10 +72,20 @@ const bookApi = createApi({
             }),
             invalidatesTags: ['Book']
 
+        }),
+        updateBook: builder.mutation({
+            query: ({ id,formData }) => ({
+                url: `/books/admin/updateBook/${id}`,
+                method: "PUT",
+                body: formData
+
+            }),
+            invalidatesTags: ['Book']
+
         })
 
     })
 })
 
-export const { useGetBooksQuery, useGetBookByIdQuery, useGetTopSellersQuery, useGetRecommendedBooksQuery, useCreateBookMutation ,useDeleteBookMutation } = bookApi
+export const { useGetBooksQuery, useGetBookByIdQuery, useGetTopSellersQuery, useGetRecommendedBooksQuery, useCreateBookMutation, useDeleteBookMutation, useUpdateBookMutation } = bookApi
 export default bookApi

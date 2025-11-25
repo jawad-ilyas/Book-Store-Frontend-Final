@@ -1,6 +1,6 @@
 import OrderRow from "./OrderRow";
 
-const OrdersTable = ({ orders, onStatusChange }) => {
+const OrdersTable = ({ orders }) => {
   return (
     <div className="overflow-x-auto rounded-2xl">
       <table className="w-full border-collapse">
@@ -15,7 +15,7 @@ const OrdersTable = ({ orders, onStatusChange }) => {
         </thead>
         <tbody className="space-y-2">
           {orders.map((order) => (
-            <OrderRow key={order.id} order={order} onStatusChange={onStatusChange} />
+            <OrderRow key={order._id} order={order} />
           ))}
         </tbody>
       </table>

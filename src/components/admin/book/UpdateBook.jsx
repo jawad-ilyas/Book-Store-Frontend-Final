@@ -3,25 +3,52 @@ import { useForm } from "react-hook-form";
 import { FiUpload } from "react-icons/fi";
 import { useGetAllAuthorsQuery } from "../../../redux/author/authorApi";
 import { useGetAllCategoriesQuery } from "../../../redux/category/categoryApi";
-import { useCreateBookMutation } from "../../../redux/book/bookApi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useCreateBookMutation, useGetBookByIdQuery, useUpdateBookMutation } from "../../../redux/book/bookApi";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 import AdminLayout from "../../AdminLayout";
 
-const AddBook = () => {
+const UpdateBook = () => {
     const navigate = useNavigate();
     const { id } = useParams()
-    const { register, handleSubmit, setValue, reset, formState: { errors }, watch } = useForm();
-    const [coverImage, setCoverImage] = useState(null);
+    if (!id) return <Navigate to="/admin/update" replace />;
+    const { data: updateBookData, isLoading } = useGetBookByIdQuery(id)
+    const { book } = updateBookData || {}
+    const { register, handleSubmit, setValue, reset, formState: { errors }, watch } = useForm({
+        defaultValues: {
+
+        }
+    });
+
+    const [coverImage, setCoverImage] = useState(null); // new uploaded file
+    const [existingCover, setExistingCover] = useState(null); // existing cover URL
+    const [existingAdditionalImages, setExistingAdditionalImages] = useState([]); // URLs from API
+
+    // Set default values once data is fetched
+    useEffect(() => {
+        if (book) {
+            reset({
+                title: book.title || "",
+                author: book.author?._id || "",
+                category: book.category || "",
+                subCategory: book.subCategory || "",
+                price: book.price || 0,
+                discountPercent: book.discountPercent || 0,
+                stock: book.stock || 0,
+                slug: book.slug || "",
+                description: book.description || "",
+                topSeller: book.topSeller || false,
+                recommended: book.recommended || false,
+            });
+            setExistingCover(book?.coverImage)
+            setExistingAdditionalImages(Array.isArray(book?.images) ? book.images : (book?.images ? [book.images] : []));
+        }
+    }, [book, reset]);
+
     const [additionalImages, setAdditionalImages] = useState([]);
-    const [createBook] = useCreateBookMutation()
+
+    const [updateBook] = useUpdateBookMutation()
     const onSubmit = async (data) => {
-        console.log("Book Data:", data);
-        console.log(data?.converImage?.[0])
-        console.log("Cover Image:", coverImage);
-        console.log("Additional Images:", additionalImages);
-
-
         const formData = new FormData();
 
         // Append text fields
@@ -39,41 +66,47 @@ const AddBook = () => {
 
         // Append cover image
         if (coverImage) {
+            console.log("cover image s ")
             formData.append("coverImage", coverImage);
+        }
+        else {
+            console.log("cover image is not uplaoded")
         }
 
         // Append additional images
-        additionalImages.forEach((file, index) => {
-            formData.append("images", file);
-        });
+        // New files
+        additionalImages.forEach(file => formData.append("images", file));
 
-        const response = await createBook(formData)
-        console.log("response of the new create book ", response)
+        // Existing images (after removing unwanted ones)
+        formData.append("images", JSON.stringify(existingAdditionalImages));
+        const response = await updateBook({ id, formData }).unwrap();
+        console.log("response of the new update book ", response)
 
-        if (response?.data?.success) {
+        if (response?.success) {
             reset()
-            toast.success(response?.data?.message || "New Book Add successfully!", {
+            toast.success(response?.message || "Book Updated successfully!", {
                 position: "top-right",
                 autoClose: 5000,
                 theme: "dark",
             });
 
-            setTimeout(() => {
-                navigate(`/book/${response?.data?.book?._id}`)
-            }, 7000)
+            // setTimeout(() => {
+            //     navigate(`/book/${response?.data?.book?._id}`)
+            // }, 7000)
         }
     };
 
 
 
     const handleCoverChange = (e) => {
+
         const file = e.target.files[0];
         if (file) setCoverImage(file);
     };
 
     const handleAdditionalImages = (e) => {
         const files = Array.from(e.target.files);
-        setAdditionalImages(files);
+        setAdditionalImages(prev => [...prev, ...files]); // append new files instead of replacing
     };
 
 
@@ -102,11 +135,13 @@ const AddBook = () => {
     // console.log("categoryData", categoryData)
     const { categoriesList } = categoryData || []
     // console.log("categoriesList", categoriesList)
+
+    if (isLoading) return <div>Loading .....................</div>
     return (
         <AdminLayout>
             <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900 p-6 sm:p-10">
                 <div className="flex-grow max-w-4xl mx-auto">
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Add New Book</h1>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Update Book</h1>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg space-y-6">
 
@@ -148,6 +183,7 @@ const AddBook = () => {
 
                         {/* Category */}
                         <div>
+
                             <label className="text-gray-700 dark:text-gray-300 font-medium">Category</label>
                             <select
                                 {...register("category", { required: "Category is required" })}
@@ -206,43 +242,41 @@ const AddBook = () => {
 
                         {/* Cover Image */}
                         <div>
-                            <label className="text-gray-700 dark:text-gray-300 font-medium">Cover Image</label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleCoverChange}
-                                className="w-full mt-2 text-gray-700 dark:text-gray-300"
-                            />
-                            {coverImage && (
-                                <img
-                                    src={URL.createObjectURL(coverImage)}
-                                    alt="Cover Preview"
-                                    className="mt-3 w-48 h-64 object-cover rounded-xl shadow cursor-pointer hover:opacity-90 transition"
-                                />
-                            )}
+                            <label>Cover Image</label>
+                            <input type="file" accept="image/*" onChange={(e) => setCoverImage(e.target.files[0])} />
+                            {coverImage ? (
+                                <img src={URL.createObjectURL(coverImage)} alt="Cover Preview" />
+                            ) : existingCover ? (
+                                <div className="relative">
+                                    <img src={existingCover} alt="Current Cover" />
+                                    <button type="button" onClick={() => setExistingCover(null)}>Remove</button>
+                                </div>
+                            ) : null}
                         </div>
 
                         {/* Additional Images */}
                         <div>
-                            <label className="text-gray-700 dark:text-gray-300 font-medium">Additional Images</label>
-                            <input
-                                type="file"
-                                multiple
-                                accept="image/*"
-                                onChange={handleAdditionalImages}
-                                className="w-full mt-2 text-gray-700 dark:text-gray-300"
-                            />
-                            <div className="flex space-x-3 mt-3 overflow-x-auto">
+                            <label>Additional Images</label>
+                            <input type="file" multiple accept="image/*" onChange={handleAdditionalImages} />
+                            <div className="flex space-x-2 overflow-x-auto">
+                                {/* Existing images */}
+                                {existingAdditionalImages.map((url, idx) => (
+                                    <div key={idx} className="relative">
+                                        <img src={url} alt={`Existing ${idx}`} className="w-32 h-40 object-cover rounded-xl" />
+                                        <button type="button" onClick={() => setExistingAdditionalImages(prev => prev.filter((_, i) => i !== idx))}>Remove</button>
+                                    </div>
+                                ))}
+
+                                {/* New uploaded files */}
                                 {additionalImages.map((file, idx) => (
-                                    <img
-                                        key={idx}
-                                        src={URL.createObjectURL(file)}
-                                        alt={`Additional ${idx}`}
-                                        className="w-32 h-40 object-cover rounded-xl shadow cursor-pointer hover:opacity-90 transition"
-                                    />
+                                    <div key={idx} className="relative">
+                                        <img src={URL.createObjectURL(file)} alt={`New ${idx}`} className="w-32 h-40 object-cover rounded-xl" />
+                                        <button type="button" onClick={() => setAdditionalImages(prev => prev.filter((_, i) => i !== idx))}>Remove</button>
+                                    </div>
                                 ))}
                             </div>
                         </div>
+
 
                         {/* Description */}
                         <div>
@@ -279,7 +313,7 @@ const AddBook = () => {
                             type="submit"
                             className="w-full py-3 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-xl transition"
                         >
-                            Upload Book
+                            UpdateBook
                         </button>
                     </form>
                 </div>
@@ -288,4 +322,4 @@ const AddBook = () => {
     );
 };
 
-export default AddBook;
+export default UpdateBook;

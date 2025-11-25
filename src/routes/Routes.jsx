@@ -24,6 +24,7 @@ import ToastComponent from "../components/ToastComponent";
 import App from "../App";
 import { AddBook, CreateBanner, CreateCategory } from "../components/admin";
 import PrivateRoutes from "./PrivateRoutes";
+import UpdateBook from "../components/admin/book/UpdateBook";
 
 const router = createBrowserRouter([
     {
@@ -62,6 +63,7 @@ const router = createBrowserRouter([
                     { path: "/admin/dashboard", element: <AdminDashboard /> },
                     { path: "/admin/books", element: <AdminBooksPage /> },
                     { path: "/admin/books/add", element: <AddBook /> },
+                    { path: "/admin/books/update/:id", element: <UpdateBook /> },
                     { path: "/admin/orders", element: <AdminOrdersPage /> },
                     { path: "/admin/users", element: <AdminUsersPage /> },
                     { path: "/admin/banners/add", element: <CreateBanner /> },

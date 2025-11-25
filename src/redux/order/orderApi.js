@@ -65,6 +65,15 @@ const orderApi = createApi({
         getOrderById: builder.query({
             query: (id) => `/orders/${id}`,
             providesTags: ['Orders']
+        }),
+        updateOrderStatus: builder.mutation({
+            query: ({ id, ...orderStatus }) => (
+                {
+                    url: `/orders/${id}`,
+                    method: "PUT",
+                    body: orderStatus
+                }),
+            invalidatesTags: ['Orders']
         })
     })
 });
@@ -75,7 +84,8 @@ export const {
     useGetOrderByIdQuery,
     useGetAllOrdersQuery,
     useLazyGetAllOrdersQuery,
-    useGetOrdersByUserQuery
+    useGetOrdersByUserQuery,
+    useUpdateOrderStatusMutation
 } = orderApi;
 
 export default orderApi;
