@@ -25,6 +25,9 @@ import App from "../App";
 import { AddBook, CreateBanner, CreateCategory } from "../components/admin";
 import PrivateRoutes from "./PrivateRoutes";
 import UpdateBook from "../components/admin/book/UpdateBook";
+import BannersList from "../components/admin/banner/BannersList";
+import AdminBannerPage from "../pages/AdminBannerPage/AdminBannerPage";
+import UpdateBanner from "../components/admin/banner/UpdateBanner";
 
 const router = createBrowserRouter([
     {
@@ -66,7 +69,9 @@ const router = createBrowserRouter([
                     { path: "/admin/books/update/:id", element: <UpdateBook /> },
                     { path: "/admin/orders", element: <AdminOrdersPage /> },
                     { path: "/admin/users", element: <AdminUsersPage /> },
+                    { path: "/admin/banners", element: <AdminBannerPage /> },
                     { path: "/admin/banners/add", element: <CreateBanner /> },
+                    { path: "/admin/banners/update/:id", element: <UpdateBanner /> },
                     { path: "/admin/createcategory", element: <CreateCategory /> },
                 ]
             },

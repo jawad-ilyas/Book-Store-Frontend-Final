@@ -30,6 +30,10 @@ const bannerApi = createApi({
       query: () => "/getAllBanners",
       providesTags: ["Banner"],
     }),
+    getBanner: builder.query({
+      query: (id) => `/admin/getBanner/${id}`,
+      providesTags: ["Banner"],
+    }),
 
     // Admin: create a banner
     createBanner: builder.mutation({
@@ -43,7 +47,7 @@ const bannerApi = createApi({
 
     // Admin: update banner details
     updateBanner: builder.mutation({
-      query: ({ id, ...data }) => ({  
+      query: ({ id, data }) => ({
         url: `/admin/updateBanner/${id}`,
         method: "PUT",
         body: data,
@@ -53,8 +57,8 @@ const bannerApi = createApi({
 
     // Admin: update hero image
     updateHeroImage: builder.mutation({
-      query: (formData) => ({
-        url: "/admin/updateHeroImage",
+      query: ({ id, formData }) => ({
+        url: `/admin/updateHeroImage/${id}`,
         method: "PUT",
         body: formData, // formData for single image
       }),
@@ -63,8 +67,8 @@ const bannerApi = createApi({
 
     // Admin: update main/banner image
     updateBannerImage: builder.mutation({
-      query: (formData) => ({
-        url: "/admin/updateBannerImage",
+      query: ({ id, formData }) => ({
+        url: `/admin/updateBannerImage/${id}`,
         method: "PUT",
         body: formData,
       }),
@@ -84,6 +88,7 @@ const bannerApi = createApi({
 
 // Export hooks for functional components
 export const {
+  useGetBannerQuery,
   useGetAllBannersQuery,
   useCreateBannerMutation,
   useUpdateBannerMutation,
