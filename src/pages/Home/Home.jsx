@@ -13,10 +13,9 @@ const Home = () => {
       <HeroBanner />
 
       {/* Book Categories */}
-      {/* <Categories /> */}
-      {/* <CreateCategory /> */}
+      <Categories />
       {/* Top Sellers Section */}
-      {/* <TopSellers /> */}
+      <TopSellers />
 
       {/* Recommended / Curated Books */}
       {/* <RecommendedBooks /> */}

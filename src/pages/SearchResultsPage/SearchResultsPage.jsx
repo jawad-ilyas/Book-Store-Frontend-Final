@@ -3,16 +3,18 @@ import FiltersSidebar from "./FiltersSidebar";
 import BooksGrid from "./BooksGrid";
 import Pagination from "./Pagination";
 import { useGetBooksQuery } from "../../redux/book/bookApi.js"
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 
 const useQuery = () => new URLSearchParams(useLocation().search)
 
 const SearchResultsPage = () => {
+  const { categorySearch } = useParams();
   const [category, setCategory] = useState([]);
   const [minRating, setMinRating] = useState(-1)
   const query = useQuery();
   const searchTerm = query.get("q") || "";
+  let categoryTerm = query.get("categoryq") || "";
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   // console.log("query data  ", query)
@@ -20,7 +22,7 @@ const SearchResultsPage = () => {
 
   // this query is for the show books to user 
   const { data, isError, isLoading } = useGetBooksQuery({
-    search: searchTerm, category: category.join(","), minRating: minRating,
+    search: searchTerm, category: category.join(",") || categoryTerm, minRating: minRating,
     page: currentPage,
     limit: itemsPerPage,
   })
