@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LogoutBtn from "./LogoutBtn";
-import { useGetCartCountQuery } from "../redux/cart/cartApi";
+import { useGetCartCountQuery, useGetCartQuery } from "../redux/cart/cartApi";
 
 const Header = () => {
   const [theme, setTheme] = useState("light");
@@ -60,8 +60,8 @@ const Header = () => {
     localStorage.setItem("theme", newTheme);
   };
 
-  const { data: cartCount } = useGetCartCountQuery();
-  console.log("total count of the cart current user ", cartCount?.cartItems)
+  const { data: cartCount } = useGetCartQuery();
+  console.log("total count of the cart current user ", cartCount?.cartItems?.items)
   return (
     <header className="sticky top-0 z-50 px-6 py-4 bg-white/20 dark:bg-black/20 backdrop-blur-xl shadow-neu-light dark:shadow-neu-dark">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
@@ -108,9 +108,9 @@ const Header = () => {
             <Link to="/cart">
               <ShoppingCartIcon className="w-7 h-7 text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400 transition" />
             </Link>
-            {isAuthorized && cartCount?.cartItems > 0 && (
+            {isAuthorized && cartCount?.cartItems?.items.length > 0 && (
               <span className="absolute top-0 right-0 bg-teal-500 text-white text-xs px-1.5 py-0.5 rounded-full shadow">
-                {cartCount?.cartItems}
+                {cartCount?.cartItems?.items.length}
               </span>
             )}
           </motion.button>

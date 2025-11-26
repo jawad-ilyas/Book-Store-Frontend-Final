@@ -1,6 +1,6 @@
 // CheckoutPage.jsx
 import React, { useEffect, useState } from "react";
-import { useGetCartQuery } from "../../redux/cart/cartApi";
+import { useGetCartCountQuery, useGetCartQuery } from "../../redux/cart/cartApi";
 import BillingForm from "./BillingForm";
 import PaymentMethod from "./PaymentMethod";
 import OrderSummary from "./OrderSummary";
@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 import AddressSelector from "../../components/AddressSelector";
 
 const CheckoutPage = () => {
-  const { data } = useGetCartQuery();
+  const { data, refetch: refetchCart } = useGetCartQuery();
+  // const { data: refetch: refetchCartCount } = useGetCartCountQuery();
   const cartItems = data?.cartItems?.items || [];
   const navigate = useNavigate();
   const [selectExistingAddress, setSelectExistingAddress] = useState(null);
@@ -65,6 +66,7 @@ const CheckoutPage = () => {
       console.log("response of the order is this ", orderResponse?.data)
 
       if (orderResponse?.data?.success) {
+        refetchCart()
         navigate("/orders")
       }
       // setStatus({ loading: false, success: "Order placed successfully!", error: null });

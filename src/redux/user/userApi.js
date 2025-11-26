@@ -39,7 +39,7 @@ const userApi = createApi({
             query: () => ({
                 url: "/auth/logout",
                 method: "POST",
-             
+
             }),
             invalidatesTags: ['User']
         }),
@@ -86,6 +86,10 @@ const userApi = createApi({
             query: () => "/users/wishlist/getWishlist",
             providesTags: ['User']
         }),
+        allUserList: builder.query({
+            query: () => "/users/alluserlist",
+            providesTags: ['User']
+        }),
     })
 });
 
@@ -99,7 +103,8 @@ export const {
     useUpdateImageMutation,
     useAddToWishlistMutation,
     useRemoveFromWishlistMutation,
-    useGetWishlistQuery
+    useGetWishlistQuery,
+    useAllUserListQuery,
 } = userApi;
 
 export default userApi;

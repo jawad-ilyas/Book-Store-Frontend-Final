@@ -35,7 +35,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
             {/* Header with Close Button */}
             <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <h2 className="text-xl font-bold">Admin Panel</h2>
+                <Link to="/admin/dashboard" className="text-xl font-bold">Admin Panel</Link>
 
                 <button
                     onClick={() => onClose(false)}
@@ -94,9 +94,9 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                     {openMenu === "orders" && (
                         <ul className="ml-10 mt-1 space-y-1">
-                            <li><Link to="/admin/orders/add" className="block py-2" onClick={handleLinkClick}>Add Order</Link></li>
-                            <li><Link to="/admin/orders/update" className="block py-2" onClick={handleLinkClick}>Update Order</Link></li>
-                            <li><Link to="/admin/orders/delete" className="block py-2" onClick={handleLinkClick}>Delete Order</Link></li>
+                            {/* <li><Link to="/admin/orders/add" className="block py-2" onClick={handleLinkClick}>Add Order</Link></li> */}
+                            <li><Link to="/admin/orders" className="block py-2" onClick={handleLinkClick}>See Order</Link></li>
+                            {/* <li><Link to="/admin/orders/delete" className="block py-2" onClick={handleLinkClick}>Delete Order</Link></li> */}
                         </ul>
                     )}
                 </li>
@@ -120,15 +120,15 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                     {openMenu === "users" && (
                         <ul className="ml-10 mt-1 space-y-1">
-                            <li><Link to="/admin/users/add" className="block py-2" onClick={handleLinkClick}>Add User</Link></li>
-                            <li><Link to="/admin/users/update" className="block py-2" onClick={handleLinkClick}>Update User</Link></li>
-                            <li><Link to="/admin/users/delete" className="block py-2" onClick={handleLinkClick}>Delete User</Link></li>
+                            {/* <li><Link to="/admin/users/add" className="block py-2" onClick={handleLinkClick}>Add User</Link></li> */}
+                            {/* <li><Link to="/admin/users/update" className="block py-2" onClick={handleLinkClick}>Update User</Link></li> */}
+                            <li><Link to="/admin/users" className="block py-2" onClick={handleLinkClick}> Users List</Link></li>
                         </ul>
                     )}
                 </li>
 
                 {/* COUPONS */}
-                <li>
+                {/* <li>
                     <button
                         onClick={() => toggleMenu("coupons")}
                         className="flex justify-between items-center w-full px-6 py-3 hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -151,7 +151,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             <li><Link to="/admin/coupons/delete" className="block py-2" onClick={handleLinkClick}>Delete Coupon</Link></li>
                         </ul>
                     )}
-                </li>
+                </li> */}
 
                 {/* BANNERS */}
                 <li>

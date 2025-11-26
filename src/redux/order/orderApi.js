@@ -40,7 +40,7 @@ const orderApi = createApi({
                 method: 'POST',
                 body: data
             }),
-            invalidatesTags: ['Orders']
+            invalidatesTags: ['Orders', 'Cart']
         }),
 
         /**

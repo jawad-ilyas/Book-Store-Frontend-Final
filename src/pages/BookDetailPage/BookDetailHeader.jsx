@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import { HeartIcon, ShoppingCartIcon, StarIcon, TagIcon } from "@heroicons/react/24/outline";
+import AddToCartBtn from "../../components/AddToCartBtn";
+import { useSelector } from "react-redux";
 
 const BookDetailHeader = ({ book }) => {
+
+  const { user } = useSelector(state => state.auth)
+  console.log("user information ", user)
   const discountedPrice = book.discountPercent
     ? (book.price * (100 - book.discountPercent)) / 100
     : book.price;
@@ -78,23 +83,18 @@ const BookDetailHeader = ({ book }) => {
         <p className="text-gray-800 dark:text-gray-200 mb-6">{book.description}</p>
 
         {/* Buttons */}
-        <div className="flex gap-4">
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
-          >
-            <ShoppingCartIcon className="w-5 h-5" />
-            Add to Cart
-          </motion.button>
-
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-gray-100 font-semibold shadow-neu hover:shadow-neu-hover transition"
-          >
-            <HeartIcon className="w-5 h-5 text-red-500" />
-            Wishlist
-          </motion.button>
-        </div>
+        {user?.role === "user" &&
+          <div className="flex gap-4">
+            <AddToCartBtn bookId={book?._id} />
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-gray-100 font-semibold shadow-neu hover:shadow-neu-hover transition"
+            >
+              <HeartIcon className="w-5 h-5 text-red-500" />
+              Wishlist
+            </motion.button>
+          </div>
+        }
       </motion.div>
     </section>
   );
