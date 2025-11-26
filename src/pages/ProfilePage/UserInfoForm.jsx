@@ -2,13 +2,19 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { useUpdateUserProfileMutation } from "../../redux/user/userApi.js"
+import handleSuccessToast from "../../components/HandleSuccessToast.js";
 const UserInfoForm = ({ user, onUpdate }) => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: { name: user.name, email: user.email },
   });
   const [updateUserProfile] = useUpdateUserProfileMutation();
-  const onSubmit = (data) => {
-    updateUserProfile(data)
+  const onSubmit = async (data) => {
+    const response = await updateUserProfile(data).unwrap();
+
+    if (response) {
+      handleSuccessToast("User Information is Update Successfully")
+    }
+
   };
 
   return (

@@ -7,13 +7,13 @@ import OrderSummary from "./OrderSummary";
 import { useCreateAddressMutation, useGetAddressesQuery } from "../../redux/address/addressApi";
 import { useCreateOrderMutation } from "../../redux/order/orderApi";
 import { useNavigate } from "react-router-dom";
+import AddressSelector from "../../components/AddressSelector";
 
 const CheckoutPage = () => {
   const { data } = useGetCartQuery();
   const cartItems = data?.cartItems?.items || [];
   const navigate = useNavigate();
-  const { data: userAddressData } = useGetAddressesQuery()
-
+  const [selectExistingAddress, setSelectExistingAddress] = useState(null);
   // State to store billing info
   const [billingInfo, setBillingInfo] = useState(null);
 
@@ -32,7 +32,9 @@ const CheckoutPage = () => {
   const [createOrder] = useCreateOrderMutation()
   const handleConfirmOrder = async () => {
 
-    if (!billingInfo) return alert("Please fill billing information.");
+    if (!selectExistingAddress && !billingInfo) {
+      return alert("Please fill billing information.");
+    }
     if (!paymentMethod) return alert("Please select a payment method.");
     if ((paymentMethod === "stripe" || paymentMethod === "card") && !paymentSuccess) {
       return alert("Please complete the payment before confirming the order.");
@@ -43,12 +45,15 @@ const CheckoutPage = () => {
     // console.log("paymentMethod", paymentMethod)
     // console.log("provider", paymentMethod)
     // console.log("transactionId", paymentMethodReseponse?.payment_method)
-
-    const resonponse = await createAddress(billingInfo)
-    console.log("response of the data is this ", resonponse?.data?.address?._id)
-
+    let response;
+    if (selectExistingAddress === null) {
+      response = await createAddress(billingInfo)
+      console.log("response of the data is this ", response?.data?.address?._id)
+    }
+    const addressId =
+      selectExistingAddress ?? response?.data?.address?._id ?? null;
     const data = {
-      addressId: resonponse?.data?.address?._id,
+      addressId: addressId,
       paymentMethod: paymentMethod,
       provider: paymentMethod,
       transactionId: paymentMethodReseponse?.payment_method || null
@@ -57,10 +62,10 @@ const CheckoutPage = () => {
       // Simulate order creation
       const orderResponse = await createOrder(data)
       // await new Promise((resolve) => setTimeout(resolve, 1500));
-      // console.log("response of the order is this ", orderResponse)
+      console.log("response of the order is this ", orderResponse?.data)
 
-      if (orderResponse?.success) {
-        navigate("/profile")
+      if (orderResponse?.data?.success) {
+        navigate("/orders")
       }
       // setStatus({ loading: false, success: "Order placed successfully!", error: null });
       // alert("Order placed successfully!");
@@ -71,7 +76,11 @@ const CheckoutPage = () => {
   useEffect(() => {
     if (cartItems.length === 0) navigate("/");
   }, [cartItems, navigate]);
-
+  const handleSelectedAddress = (id) => {
+    setSelectExistingAddress(id)
+    setBillingInfo(true)
+    console.log("User selected address:", id);
+  };
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-500 px-6 py-12">
       <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-12 text-center">Checkout</h1>
@@ -79,8 +88,10 @@ const CheckoutPage = () => {
       <div className="flex flex-col md:flex-row gap-8">
         {/* Left side: Billing + Payment */}
         <div className="flex-1 flex flex-col gap-6">
-          <BillingForm onSubmitForm={setBillingInfo} />
-
+          <BillingForm onSubmitForm={setBillingInfo} selectExistingAddress={selectExistingAddress} />
+          <AddressSelector
+            onSelect={handleSelectedAddress}
+          />
           <PaymentMethod
             cartItems={cartItems}
             selectedMethod={paymentMethod}

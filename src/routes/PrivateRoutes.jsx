@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const PrivateRoutes = ({ children, adminOnly = false }) => {
+const PrivateRoutes = ({ adminOnly = false }) => {
     const { user, isAuthorized } = useSelector((state) => state.auth);
 
     // fallback to localStorage if Redux is empty (optional)

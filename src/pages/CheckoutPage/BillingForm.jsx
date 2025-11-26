@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 
-const BillingForm = ({ onSubmitForm }) => {
+const BillingForm = ({ onSubmitForm, selectExistingAddress }) => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
 
   const user = JSON.parse(localStorage.getItem("user")) || {};
@@ -101,6 +101,7 @@ const BillingForm = ({ onSubmitForm }) => {
       <motion.button
         whileTap={{ scale: 0.95 }}
         type="submit"
+        disabled={selectExistingAddress}
         className="mt-4 px-6 py-3 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
       >
         Save Billing Info

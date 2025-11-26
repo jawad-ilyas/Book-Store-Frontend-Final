@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Loader2 } from "lucide-react";
 import { useUpdateImageMutation } from "../../redux/user/userApi";
+import handleSuccessToast from "../../components/HandleSuccessToast";
 
 const ChangeAvatar = ({ avatar }) => {
   console.log("avatar image into change avatar", avatar)
@@ -22,6 +23,7 @@ const ChangeAvatar = ({ avatar }) => {
     setLoading(true);
     const response = await updateImage(formData)
     if (response) {
+      handleSuccessToast("Profile Image is Update Successfully")
       setLoading(false);
     }
     // Simulate upload time so loading animation works
