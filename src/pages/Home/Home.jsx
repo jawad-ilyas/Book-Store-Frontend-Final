@@ -18,7 +18,7 @@ const Home = () => {
       <TopSellers />
 
       {/* Recommended / Curated Books */}
-      {/* <RecommendedBooks /> */}
+      <RecommendedBooks />
 
       {/* Newsletter Signup */}
       <NewsletterSignup />

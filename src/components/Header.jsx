@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LogoutBtn from "./LogoutBtn";
+import { useGetCartCountQuery } from "../redux/cart/cartApi";
 
 const Header = () => {
   const [theme, setTheme] = useState("light");
@@ -59,6 +60,8 @@ const Header = () => {
     localStorage.setItem("theme", newTheme);
   };
 
+  const { data: cartCount } = useGetCartCountQuery();
+  console.log("total count of the cart current user ", cartCount?.cartItems)
   return (
     <header className="sticky top-0 z-50 px-6 py-4 bg-white/20 dark:bg-black/20 backdrop-blur-xl shadow-neu-light dark:shadow-neu-dark">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
@@ -91,23 +94,23 @@ const Header = () => {
         <div className="flex items-center gap-5">
 
           {/* WISHLIST */}
-          <motion.button whileTap={{ scale: 0.9 }} className="relative">
+          {/* <motion.button whileTap={{ scale: 0.9 }} className="relative">
             <HeartIcon className="w-7 h-7 text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400 transition" />
             {isAuthorized && user?.wishlist?.length > 0 && (
               <span className="absolute top-0 right-0 bg-teal-500 text-white text-xs px-1.5 py-0.5 rounded-full shadow">
                 {user.wishlist.length}
               </span>
             )}
-          </motion.button>
+          </motion.button> */}
 
           {/* CART */}
           <motion.button whileTap={{ scale: 0.9 }} className="relative">
             <Link to="/cart">
               <ShoppingCartIcon className="w-7 h-7 text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400 transition" />
             </Link>
-            {isAuthorized && user?.cart?.length > 0 && (
+            {isAuthorized && cartCount?.cartItems > 0 && (
               <span className="absolute top-0 right-0 bg-teal-500 text-white text-xs px-1.5 py-0.5 rounded-full shadow">
-                {user.cart.length}
+                {cartCount?.cartItems}
               </span>
             )}
           </motion.button>
@@ -129,12 +132,13 @@ const Header = () => {
                   <Link onClick={() => setShowDropdown(false)} to="/profile" className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
                     Profile
                   </Link>
+                  <br></br>
                   <Link onClick={() => setShowDropdown(false)} to="/orders" className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
                     Orders
                   </Link>
-                  <button onClick={() => setShowDropdown(false)} className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
+                  {/* <button onClick={() => setShowDropdown(false)} className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
                     Wishlist
-                  </button>
+                  </button> */}
                   <hr className="border-gray-300/40 dark:border-gray-700/40" />
                   <LogoutBtn onLogout={() => setShowDropdown(false)} />
                 </motion.div>

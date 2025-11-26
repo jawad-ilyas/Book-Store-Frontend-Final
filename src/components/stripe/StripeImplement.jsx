@@ -16,14 +16,15 @@ const CARD_ELEMENT_OPTIONS = {
   hidePostalCode: true,
 };
 
-const StripeImplement = ({ cartItems,setpaymentMethodReseponse, billingInfo, onPaymentResult }) => {
+const StripeImplement = ({ cartItems, setpaymentMethodReseponse, billingInfo, onPaymentResult }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
 
   const amount = cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) * 100;
-
+  // console.log("cartItems for stripe:", cartItems);
+  // console.log("calculated amount in cents:", amount);
   const handlePayment = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
@@ -57,7 +58,9 @@ const StripeImplement = ({ cartItems,setpaymentMethodReseponse, billingInfo, onP
       setIsProcessing(false);
     }
   };
-
+  if (!stripe || !elements) {
+    console.warn("Stripe or Elements not loaded yet");
+  }
   return (
     <form onSubmit={handlePayment} className="flex flex-col gap-4">
       <div className="p-4 rounded-xl bg-white/50 dark:bg-black/50 shadow-neu">
@@ -65,7 +68,7 @@ const StripeImplement = ({ cartItems,setpaymentMethodReseponse, billingInfo, onP
       </div>
       <button
         type="submit"
-        disabled={!stripe || isProcessing}
+        // disabled={!stripe || isProcessing}
         className="mt-4 px-6 py-3 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
       >
         {isProcessing ? "Processing..." : `Pay $${amount / 100}`}

@@ -13,8 +13,8 @@ const BookDetailPage = () => {
     // const bookId = "691c692cae2f2014adb33520"
     const { data, isError, isLoading } = useGetBookByIdQuery(id)
     const { data: review } = useGetReviewsByBookQuery(id)
-    console.log("review data ", review)
-    console.log("review data?.booksReview ", review?.booksReview)
+    // console.log("review data ", review)
+    // console.log("review data?.booksReview ", review?.booksReview)
     const booksReview = review?.booksReview || []
     const book = data?.book || {}
     // console.log("single book data ", book)

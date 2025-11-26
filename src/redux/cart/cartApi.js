@@ -37,6 +37,13 @@ const cartApi = createApi({
             }),
             providesTags: ['Cart']
         }),
+        getCartCount: builder.query({
+            query: () => ({
+                url: "/users/cartcount/",
+
+            }),
+            providesTags: ['Cart']
+        }),
         removeFromCart: builder.mutation({
             query: (data) => ({
                 url: "/users/cart/remove",
@@ -59,7 +66,7 @@ const cartApi = createApi({
 
 // Export hooks
 export const {
-
+    useGetCartCountQuery,
     useAddToCartMutation,
     useRemoveFromCartMutation,
     useUpdateCartItemMutation,

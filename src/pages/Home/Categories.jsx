@@ -16,7 +16,7 @@ const Categories = () => {
       <h2 className="text-3xl font-bold mb-6">Explore Categories</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {categories.map((category) => (
-          <Link to={`/search?categoryq=${category?._id}`}>
+          <Link key={category._id} to={`/search?categoryq=${category?._id}`}>
             <motion.div
               key={category._id}
               className="bg-white rounded-2xl shadow p-6 flex flex-col items-center justify-center"

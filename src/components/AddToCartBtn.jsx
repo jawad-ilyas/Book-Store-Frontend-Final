@@ -1,12 +1,18 @@
 import React from 'react'
 import { motion } from "framer-motion";
 import { useAddToCartMutation } from "../redux/cart/cartApi"
+import handleSuccessToast from './HandleSuccessToast';
 const AddToCartBtn = ({ bookId }) => {
     // console.log("add this bookid into cart ", bookId)
     const [addToCart] = useAddToCartMutation(bookId);
-    const handleAddToCart = () => {
-        console.log("bookid ", bookId)
-        addToCart({bookId})
+    const handleAddToCart = async () => {
+        // console.log("bookid ", bookId)
+        const response = await addToCart({ bookId })
+        console.log("response of the cart", response)
+        if (response?.data?.success) {
+            handleSuccessToast("Items is Add To Cart SuccessFully")
+        }
+
     }
     return (
         <motion.button

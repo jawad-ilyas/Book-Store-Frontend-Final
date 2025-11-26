@@ -1,13 +1,15 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import StripeImplement from "../../components/stripe/StripeImplement";
+import handleSuccessToast from "../../components/HandleSuccessToast";
 
 const PaymentMethod = ({ cartItems, setpaymentMethodReseponse, selectedMethod, setSelectedMethod, billingInfo, setPaymentSuccess, setStatus }) => {
 
   const handleStripeResult = (result) => {
     if (result.success) {
       setPaymentSuccess(true);
-      setStatus({ loading: false, success: "Stripe payment successful!", error: null });
+      handleSuccessToast("Stripe payment successful!")
+      // setStatus({ loading: false, success: "Stripe payment successful!", error: null });
     } else {
       setPaymentSuccess(false);
       setStatus({ loading: false, success: null, error: result.message });
@@ -74,12 +76,12 @@ const PaymentMethod = ({ cartItems, setpaymentMethodReseponse, selectedMethod, s
             exit={{ opacity: 0, y: -15 }}
             className="p-4 mt-4 rounded-xl bg-white/50 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 transition-colors"
           >
-            {/* <StripeImplement
+            <StripeImplement
               cartItems={cartItems}
               billingInfo={billingInfo}
               setpaymentMethodReseponse={setpaymentMethodReseponse}
               onPaymentResult={handleStripeResult}
-            /> */}
+            />
           </motion.div>
         )}
 

@@ -1,40 +1,62 @@
 import { motion } from "framer-motion";
 import { useGetRecommendedBooksQuery } from "../../redux/book/bookApi";
-
-
+import { Link } from "react-router-dom";
+import AddToCartBtn from "../../components/AddToCartBtn";
 
 const RecommendedBooks = () => {
-  const { data, isLoading, isError } = useGetRecommendedBooksQuery()
-  const recommendedBooks = data?.books || []
+  const { data, isLoading } = useGetRecommendedBooksQuery();
+  const recommendedBooks = data?.books || [];
+
   return (
-    <section className="my-16 px-6">
+    <section className="my-16 px-6 relative">
       <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-        Recommended for You
+        Recommended For You
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* Fade edges for premium slider look */}
+      <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-gray-100 dark:from-gray-900 to-transparent pointer-events-none"></div>
+      <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-gray-100 dark:from-gray-900 to-transparent pointer-events-none"></div>
+
+      <div className="flex overflow-x-auto space-x-6 pb-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
         {recommendedBooks.map((book) => (
           <motion.div
             key={book._id}
-            className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl shadow-neu p-4 flex flex-col items-center transition-transform hover:scale-105"
-            whileHover={{ y: -5 }}
+            whileHover={{ scale: 1.05, y: -5 }}
+            transition={{ type: "spring", stiffness: 200 }}
+            className="min-w-[220px] bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-white/20 dark:border-gray-800/20 rounded-2xl shadow-lg p-4 relative overflow-hidden"
           >
-            <img
-              src={book.coverImage}
-              alt={book.title}
-              className="w-40 h-56 rounded-lg object-cover mb-4 shadow-md"
-            />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center">
-              {book.title}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{book.author?.name}</p>
-            <p className="text-teal-500 dark:text-teal-400 font-bold mb-3">{book.price}</p>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow-neu hover:shadow-neu-hover transition"
+            {/* Book Image with Link */}
+            <Link to={`/book/${book._id}`}>
+              <img
+                src={book.coverImage}
+                alt={book.title}
+                className="w-40 h-56 rounded-xl object-cover mx-auto shadow-md mb-4 cursor-pointer"
+              />
+            </Link>
+
+            {/* Title with Link */}
+            <Link
+              to={`/book/${book._id}`}
+              className="block text-lg font-semibold text-center text-gray-900 dark:text-gray-100 hover:text-teal-500 transition"
             >
-              Add to Cart
-            </motion.button>
+              {book.title}
+            </Link>
+
+            {/* Author */}
+            <p className="text-gray-600 dark:text-gray-300 text-sm text-center mt-1">
+              {book.author?.name}
+            </p>
+
+            {/* Price */}
+            <p className="text-teal-500 dark:text-teal-400 font-bold text-center mt-2">
+              Rs. {book.price}
+            </p>
+
+            {/* Add to Cart Button */}
+            {/* Add To Cart */}
+            <div className="mt-4 flex justify-center">
+              <AddToCartBtn bookId={book._id} />
+            </div>
           </motion.div>
         ))}
       </div>

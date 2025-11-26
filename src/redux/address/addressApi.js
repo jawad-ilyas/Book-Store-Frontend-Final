@@ -31,9 +31,16 @@ const addressApi = createApi({
                 body: data
             }),
             invalidatesTags: ['Address']
+        }),
+        getAddresses: builder.query({
+            query: () => ({
+                url: `/address/`,
+                method: 'GET',
+            }),
+            providesTags: ['Address']
         })
     })
 })
 
-export const { useCreateAddressMutation } = addressApi
+export const { useCreateAddressMutation, useGetAddressesQuery } = addressApi
 export default addressApi

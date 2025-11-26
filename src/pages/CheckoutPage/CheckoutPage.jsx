@@ -1,10 +1,10 @@
 // CheckoutPage.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetCartQuery } from "../../redux/cart/cartApi";
 import BillingForm from "./BillingForm";
 import PaymentMethod from "./PaymentMethod";
 import OrderSummary from "./OrderSummary";
-import { useCreateAddressMutation } from "../../redux/address/addressApi";
+import { useCreateAddressMutation, useGetAddressesQuery } from "../../redux/address/addressApi";
 import { useCreateOrderMutation } from "../../redux/order/orderApi";
 import { useNavigate } from "react-router-dom";
 
@@ -12,9 +12,8 @@ const CheckoutPage = () => {
   const { data } = useGetCartQuery();
   const cartItems = data?.cartItems?.items || [];
   const navigate = useNavigate();
-  if (cartItems.length === 0) {
-    navigate("/")
-  }
+  const { data: userAddressData } = useGetAddressesQuery()
+
   // State to store billing info
   const [billingInfo, setBillingInfo] = useState(null);
 
@@ -40,10 +39,10 @@ const CheckoutPage = () => {
     }
 
     setStatus({ loading: true, success: null, error: null });
-    console.log("addressId", billingInfo)
-    console.log("paymentMethod", paymentMethod)
-    console.log("provider", paymentMethod)
-    console.log("transactionId", paymentMethodReseponse?.payment_method)
+    // console.log("addressId", billingInfo)
+    // console.log("paymentMethod", paymentMethod)
+    // console.log("provider", paymentMethod)
+    // console.log("transactionId", paymentMethodReseponse?.payment_method)
 
     const resonponse = await createAddress(billingInfo)
     console.log("response of the data is this ", resonponse?.data?.address?._id)
@@ -58,7 +57,7 @@ const CheckoutPage = () => {
       // Simulate order creation
       const orderResponse = await createOrder(data)
       // await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("response of the order is this ", orderResponse)
+      // console.log("response of the order is this ", orderResponse)
 
       if (orderResponse?.success) {
         navigate("/profile")
@@ -69,6 +68,9 @@ const CheckoutPage = () => {
       setStatus({ loading: false, success: null, error: err.message || "Something went wrong" });
     }
   };
+  useEffect(() => {
+    if (cartItems.length === 0) navigate("/");
+  }, [cartItems, navigate]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-500 px-6 py-12">

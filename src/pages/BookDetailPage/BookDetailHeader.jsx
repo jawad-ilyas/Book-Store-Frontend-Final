@@ -70,7 +70,7 @@ const BookDetailHeader = ({ book }) => {
           <p><span className="font-semibold">ISBN:</span> {book.isbn}</p>
           <p><span className="font-semibold">Pages:</span> {book.pages}</p>
           <p><span className="font-semibold">Stock:</span> {book.stock}</p>
-          <p><span className="font-semibold">Category:</span> {book.category}</p>
+          <p><span className="font-semibold">Category:</span> {book.category?.name}</p>
           <p><span className="font-semibold">Subcategory:</span> {book.subCategory}</p>
         </div>
 

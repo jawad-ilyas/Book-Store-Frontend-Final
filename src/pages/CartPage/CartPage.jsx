@@ -42,7 +42,6 @@ const CartPage = () => {
 
   const handleCheckout = () => {
 
-    alert("Proceeding to checkout!");
   };
 
   return (
