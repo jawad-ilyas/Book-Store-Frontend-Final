@@ -115,10 +115,13 @@ const Header = () => {
             )}
           </motion.button>
 
-          {/* USER / LOGIN */}
+          {/* USER / ADMIN DROPDOWN */}
           {isAuthorized ? (
             <div className="relative">
-              <motion.button whileTap={{ scale: 0.9 }} onClick={() => setShowDropdown(!showDropdown)}>
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
                 <UserCircleIcon className="w-8 h-8 text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400 transition" />
               </motion.button>
 
@@ -127,20 +130,79 @@ const Header = () => {
                   ref={dropdownRef}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute right-0 mt-3 w-48 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-2xl shadow-neu p-4 space-y-3"
+                  className="absolute right-0 mt-3 w-56 bg-white/60 dark:bg-black/60 backdrop-blur-xl rounded-2xl shadow-neu p-4 space-y-3"
                 >
-                  <Link onClick={() => setShowDropdown(false)} to="/profile" className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
-                    Profile
-                  </Link>
-                  <br></br>
-                  <Link onClick={() => setShowDropdown(false)} to="/orders" className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
-                    Orders
-                  </Link>
-                  {/* <button onClick={() => setShowDropdown(false)} className="w-full text-left text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400">
-                    Wishlist
-                  </button> */}
-                  <hr className="border-gray-300/40 dark:border-gray-700/40" />
-                  <LogoutBtn onLogout={() => setShowDropdown(false)} />
+                  {/* ADMIN MENU */}
+                  {user?.role === "admin" ? (
+                    <>
+                      <Link
+                        onClick={() => setShowDropdown(false)}
+                        to="/admin/dashboard"
+                        className="block text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400"
+                      >
+                        📊 Admin Dashboard
+                      </Link>
+
+                      <Link
+                        onClick={() => setShowDropdown(false)}
+                        to="/admin/books"
+                        className="block text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400"
+                      >
+                        📚 Manage Books
+                      </Link>
+
+                      <Link
+                        onClick={() => setShowDropdown(false)}
+                        to="/admin/orders"
+                        className="block text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400"
+                      >
+                        🛒 Manage Orders
+                      </Link>
+
+                      <Link
+                        onClick={() => setShowDropdown(false)}
+                        to="/admin/users"
+                        className="block text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400"
+                      >
+                        👥 Manage Users
+                      </Link>
+
+                      <Link
+                        onClick={() => setShowDropdown(false)}
+                        to="/admin/banners"
+                        className="block text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400"
+                      >
+                        🖼️ Manage Banners
+                      </Link>
+
+                      <hr className="border-gray-300/40 dark:border-gray-700/40" />
+
+                      <LogoutBtn onLogout={() => setShowDropdown(false)} />
+                    </>
+                  ) : (
+                    <>
+                      {/* USER MENU */}
+                      <Link
+                        onClick={() => setShowDropdown(false)}
+                        to="/profile"
+                        className="block text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400"
+                      >
+                        Profile
+                      </Link>
+
+                      <Link
+                        onClick={() => setShowDropdown(false)}
+                        to="/orders"
+                        className="block text-gray-900 dark:text-gray-100 hover:text-teal-500 dark:hover:text-teal-400"
+                      >
+                        Orders
+                      </Link>
+
+                      <hr className="border-gray-300/40 dark:border-gray-700/40" />
+
+                      <LogoutBtn onLogout={() => setShowDropdown(false)} />
+                    </>
+                  )}
                 </motion.div>
               )}
             </div>

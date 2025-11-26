@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import HandleDeleteBookBtn from "../../components/HandleDeleteBookBtn";
 import { Link } from "react-router-dom";
+import AddToCartBtn from "../../components/AddToCartBtn";
 
 const BooksGrid = ({ books }) => {
   const { user } = useSelector(state => state?.auth);
@@ -15,7 +16,7 @@ const BooksGrid = ({ books }) => {
           whileHover={{ y: -5 }}
         >
           {/* IMAGE */}
-          <Link to={`/book/${book.slug}`} className="w-full flex justify-center">
+          <Link to={`/book/${book._id}`} className="w-full flex justify-center">
             <motion.img
               src={book.coverImage}
               alt={book.title}
@@ -25,7 +26,7 @@ const BooksGrid = ({ books }) => {
           </Link>
 
           {/* TITLE */}
-          <Link to={`/book/${book.slug}`}>
+          <Link to={`/book/${book._id}`}>
             <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mt-3 text-center hover:underline">
               {book.title}
             </h3>
@@ -91,7 +92,7 @@ const BooksGrid = ({ books }) => {
               whileTap={{ scale: 0.95 }}
               className="mt-4 px-4 py-2 rounded-xl bg-teal-400 dark:bg-teal-500 text-white font-semibold shadow hover:shadow-xl transition"
             >
-              Add to Cart
+              <AddToCartBtn bookId={book?._id} />
             </motion.button>
           ) : (
             <div className="flex gap-3 mt-4">
